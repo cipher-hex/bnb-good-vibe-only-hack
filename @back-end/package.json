@@ -1,0 +1,38 @@
+{
+  "name": "payment-request-contracts",
+  "version": "1.0.0",
+  "description": "Smart contracts for payment request system",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "test:contract": "hardhat run scripts/test-contract.ts --network polygonAmoy",
+    "test:mainnet": "hardhat run scripts/test-mainnet-contract.ts --network polygon",
+    "deploy:polygon": "hardhat run scripts/deploy.ts --network polygon",
+    "deploy:amoy": "hardhat run scripts/deploy.ts --network polygonAmoy",
+    "verify:polygon": "hardhat verify --network polygon",
+    "verify:amoy": "hardhat verify --network polygonAmoy"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
+    "@nomicfoundation/hardhat-ethers": "^3.1.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.1.0",
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@nomicfoundation/hardhat-verify": "^2.1.1",
+    "@typechain/ethers-v6": "^0.5.1",
+    "@typechain/hardhat": "^9.1.0",
+    "@types/chai": "^4.3.20",
+    "@types/mocha": "^10.0.10",
+    "chai": "^4.5.0",
+    "ethers": "^6.15.0",
+    "hardhat": "^2.26.3",
+    "hardhat-gas-reporter": "^2.3.0",
+    "solidity-coverage": "^0.8.16",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
+    "dotenv": "^17.2.3"
+  }
+}
