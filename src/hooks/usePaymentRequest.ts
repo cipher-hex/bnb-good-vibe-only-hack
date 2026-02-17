@@ -18,6 +18,7 @@ import {
   getChainInfo,
   POLYGON_CHAIN_ID,
   POLYGON_AMOY_CHAIN_ID,
+  BNB_CHAIN_ID,
   formatPaymentId,
 } from "@/constants/paymentRequest";
 import {
@@ -47,7 +48,7 @@ export const useCreatePaymentRequest = (isTestnet: boolean = false) => {
       merchantAddress: `0x${string}`,
       token: SupportedPaymentToken,
       chainId: number,
-      amount: string
+      amount: string,
     ): Promise<PaymentRequestCreationResult> => {
       console.log("🚀 [Payment Request] Starting creation process...");
       console.log("📋 [Payment Request] Input parameters:", {
@@ -69,7 +70,7 @@ export const useCreatePaymentRequest = (isTestnet: boolean = false) => {
         const error = "Invalid merchant address";
         console.error(
           "❌ [Payment Request] Invalid merchant address:",
-          merchantAddress
+          merchantAddress,
         );
         setCreateError(error);
         return { success: false, error };
@@ -86,10 +87,16 @@ export const useCreatePaymentRequest = (isTestnet: boolean = false) => {
       setCreateError(null);
 
       try {
-        const contractAddress = getPaymentRequestContractAddress(isTestnet);
+        // Determine target chain ID based on testnet flag
         const targetChainId = isTestnet
           ? POLYGON_AMOY_CHAIN_ID
           : POLYGON_CHAIN_ID;
+
+        // Get contract address for the specific chain (supports BNB and Polygon)
+        const contractAddress = getPaymentRequestContractAddress(
+          isTestnet,
+          targetChainId,
+        );
 
         console.log("📝 [Payment Request] Contract details:", {
           contractAddress,
@@ -100,7 +107,7 @@ export const useCreatePaymentRequest = (isTestnet: boolean = false) => {
         const amountWei = parseUnits(amount, 6);
         console.log(
           "💰 [Payment Request] Amount converted to wei:",
-          amountWei.toString()
+          amountWei.toString(),
         );
 
         // Write to contract and wait for transaction hash
@@ -115,7 +122,7 @@ export const useCreatePaymentRequest = (isTestnet: boolean = false) => {
 
         console.log("✅ [Payment Request] Transaction submitted:", txHash);
         console.log(
-          "⏳ [Payment Request] Waiting for transaction confirmation..."
+          "⏳ [Payment Request] Waiting for transaction confirmation...",
         );
 
         // Wait for transaction to be mined
@@ -196,7 +203,7 @@ export const useCreatePaymentRequest = (isTestnet: boolean = false) => {
         console.log("🏁 [Payment Request] Process completed");
       }
     },
-    [address, writeContractAsync, publicClient, isTestnet]
+    [address, writeContractAsync, publicClient, isTestnet],
   );
 
   return {
@@ -211,9 +218,15 @@ export const useCreatePaymentRequest = (isTestnet: boolean = false) => {
  */
 export const useGetPaymentRequest = (
   paymentId: number | null,
-  isTestnet: boolean = false
+  isTestnet: boolean = false,
+  chainId?: number,
 ) => {
-  const contractAddress = getPaymentRequestContractAddress(isTestnet);
+  const targetChainId =
+    chainId || (isTestnet ? POLYGON_AMOY_CHAIN_ID : POLYGON_CHAIN_ID);
+  const contractAddress = getPaymentRequestContractAddress(
+    isTestnet,
+    targetChainId,
+  );
   const publicClient = usePublicClient();
 
   const {
@@ -229,7 +242,7 @@ export const useGetPaymentRequest = (
     query: {
       enabled: paymentId !== null && paymentId > 0,
     },
-    chainId: isTestnet ? POLYGON_AMOY_CHAIN_ID : POLYGON_CHAIN_ID,
+    chainId: targetChainId,
   });
 
   const getPaymentRequest = useCallback(
@@ -255,7 +268,7 @@ export const useGetPaymentRequest = (
         console.log("📝 [Get Payment Request] Contract:", contractAddress);
         console.log(
           "🆔 [Get Payment Request] Chain ID:",
-          isTestnet ? POLYGON_AMOY_CHAIN_ID : POLYGON_CHAIN_ID
+          isTestnet ? POLYGON_AMOY_CHAIN_ID : POLYGON_CHAIN_ID,
         );
 
         // Make a direct contract read call with the specific payment ID
@@ -271,7 +284,7 @@ export const useGetPaymentRequest = (
         console.log("📦 [Get Payment Request] Raw data type:", typeof result);
         console.log(
           "📦 [Get Payment Request] Is Array:",
-          Array.isArray(result)
+          Array.isArray(result),
         );
 
         if (!result) {
@@ -306,7 +319,7 @@ export const useGetPaymentRequest = (
           data.status === undefined
         ) {
           console.error(
-            "❌ [Get Payment Request] Missing required fields in contract data"
+            "❌ [Get Payment Request] Missing required fields in contract data",
           );
           return {
             success: false,
@@ -340,21 +353,21 @@ export const useGetPaymentRequest = (
 
         console.log(
           "✅ [Get Payment Request] Payment data parsed:",
-          paymentData
+          paymentData,
         );
         return { success: true, data: paymentData, exists: true };
       } catch (error: any) {
         console.error("❌ [Get Payment Request] Error:", error);
         console.error(
           "❌ [Get Payment Request] Error message:",
-          error?.message
+          error?.message,
         );
         const errorMessage =
           error?.message || "Failed to fetch payment request";
         return { success: false, error: errorMessage, exists: false };
       }
     },
-    [publicClient, contractAddress, isTestnet]
+    [publicClient, contractAddress, isTestnet],
   );
 
   // Format the current data if available (using named properties)
@@ -401,7 +414,7 @@ export const useMarkPaymentAsPaid = (isTestnet: boolean = false) => {
   const markAsPaid = useCallback(
     async (
       paymentId: number,
-      payerAddress: `0x${string}`
+      payerAddress: `0x${string}`,
     ): Promise<PaymentMarkingResult> => {
       console.log("💳 [Mark as Paid] Starting process...");
       console.log("💳 [Mark as Paid] Payment ID:", paymentId);
@@ -425,10 +438,16 @@ export const useMarkPaymentAsPaid = (isTestnet: boolean = false) => {
       setMarkError(null);
 
       try {
-        const contractAddress = getPaymentRequestContractAddress(isTestnet);
+        // Determine target chain ID based on testnet flag
         const targetChainId = isTestnet
           ? POLYGON_AMOY_CHAIN_ID
           : POLYGON_CHAIN_ID;
+
+        // Get contract address for the specific chain (supports BNB and Polygon)
+        const contractAddress = getPaymentRequestContractAddress(
+          isTestnet,
+          targetChainId,
+        );
 
         console.log("📝 [Mark as Paid] Contract details:", {
           contractAddress,
@@ -447,7 +466,7 @@ export const useMarkPaymentAsPaid = (isTestnet: boolean = false) => {
 
         console.log("✅ [Mark as Paid] Transaction submitted:", txHash);
         console.log(
-          "⏳ [Mark as Paid] Waiting for transaction confirmation..."
+          "⏳ [Mark as Paid] Waiting for transaction confirmation...",
         );
 
         // Wait for transaction to be mined
@@ -486,7 +505,7 @@ export const useMarkPaymentAsPaid = (isTestnet: boolean = false) => {
         console.log("🏁 [Mark as Paid] Process completed");
       }
     },
-    [address, writeContractAsync, publicClient, isTestnet]
+    [address, writeContractAsync, publicClient, isTestnet],
   );
 
   return {
@@ -501,7 +520,7 @@ export const useMarkPaymentAsPaid = (isTestnet: boolean = false) => {
  */
 export const usePaymentExists = (
   paymentId: number | null,
-  isTestnet: boolean = false
+  isTestnet: boolean = false,
 ) => {
   const contractAddress = getPaymentRequestContractAddress(isTestnet);
 
@@ -546,12 +565,12 @@ export const useFormatPaymentRequest = (isTestnet: boolean = false) => {
           data.status === PaymentStatus.Pending
             ? "Pending"
             : data.status === PaymentStatus.Paid
-            ? "Paid"
-            : "Cancelled",
+              ? "Paid"
+              : "Cancelled",
         isActive: data.status === PaymentStatus.Pending,
       };
     },
-    []
+    [],
   );
 
   return { formatPaymentRequest };
@@ -571,7 +590,7 @@ export const usePaymentRequest = (isTestnet: boolean = false) => {
       // For now, this is a placeholder - the actual implementation will use useGetPaymentRequest
       return { success: false, error: "Not implemented", exists: false };
     },
-    []
+    [],
   );
 
   return {

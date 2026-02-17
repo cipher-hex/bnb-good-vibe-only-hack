@@ -155,7 +155,7 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
   };
 
   const handleRecipientAddressChange = (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setState({ ...state, recipientAddress: e.target.value as `0x${string}` });
   };
@@ -384,7 +384,7 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
             console.log("💳 [Transfer] Payer (wallet):", walletAddress);
             console.log(
               "💳 [Transfer] Merchant (recipient):",
-              state.recipientAddress
+              state.recipientAddress,
             );
 
             if (!isNaN(paymentId) && paymentId > 0) {
@@ -396,13 +396,13 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
               if (markResult.success) {
                 toast.success("Payment fulfilled successfully!", {
                   description: `Payment request ${formatPaymentId(
-                    paymentId
+                    paymentId,
                   )} has been marked as paid`,
                 });
               } else {
                 console.error(
                   "❌ [Transfer] Failed to mark as paid:",
-                  markResult.error
+                  markResult.error,
                 );
                 toast.warning("Transfer completed but status update failed", {
                   description:
@@ -414,7 +414,7 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
           } catch (error: any) {
             console.error(
               "❌ [Transfer] Error marking payment as paid:",
-              error
+              error,
             );
             console.error("❌ [Transfer] Error details:", error?.message);
             toast.warning("Transfer completed but status update failed", {
@@ -523,7 +523,7 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
                   <Label className="text-gray-600">Payment ID</Label>
                   <div className="font-mono">
                     {formatPaymentId(
-                      parsePaymentId(state.paymentLoading.paymentId) || 0
+                      parsePaymentId(state.paymentLoading.paymentId) || 0,
                     )}
                   </div>
                 </div>
@@ -536,9 +536,9 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
                         PaymentStatus.Pending
                           ? "default"
                           : state.paymentLoading.data.status ===
-                            PaymentStatus.Paid
-                          ? "secondary"
-                          : "destructive"
+                              PaymentStatus.Paid
+                            ? "secondary"
+                            : "destructive"
                       }
                       className="text-xs"
                     >

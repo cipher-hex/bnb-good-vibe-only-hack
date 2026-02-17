@@ -16,7 +16,7 @@ async function main() {
   // Get the contract factory
   const PaymentRequest = await ethers.getContractFactory(
     "PaymentRequest",
-    deployer
+    deployer,
   );
 
   console.log("📝 Deploying PaymentRequest contract...");
@@ -72,6 +72,8 @@ async function main() {
       ? "polygon.json"
       : chainId === 80002n
       ? "polygonAmoy.json"
+      : chainId === 56n
+      ? "bsc.json"
       : `deployment-${chainId}.json`;
 
   const filePath = join(deploymentsDir, fileName);
@@ -83,7 +85,7 @@ async function main() {
   console.log("\n🎯 Next steps:");
   console.log("1. Verify the contract on Polygonscan:");
   console.log(
-    `   npx hardhat verify --network ${networkName} ${contractAddress}`
+    `   npx hardhat verify --network ${networkName} ${contractAddress}`,
   );
   console.log("2. Update frontend constants with the contract address and ABI");
   console.log("3. Test contract functions using Hardhat console or frontend");
@@ -91,7 +93,7 @@ async function main() {
   // Display some test data
   console.log("\n📊 Contract Info:");
   console.log(
-    `Current Payment ID: ${await paymentRequest.getCurrentPaymentId()}`
+    `Current Payment ID: ${await paymentRequest.getCurrentPaymentId()}`,
   );
   console.log(`Owner: ${await paymentRequest.owner()}`);
 }

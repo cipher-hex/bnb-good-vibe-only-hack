@@ -21,9 +21,22 @@ export const PAYMENT_REQUEST_CONTRACT_ADDRESS_TESTNET =
   "0x78252F885Be985e9F9B96FADCe971Ee801cDD06B" as const;
 
 /**
+ * PaymentRequest contract address on BNB Chain mainnet
+ * Deployed on BNB Chain at block 81790144
+ * Deployment timestamp: 2025-02-17
+ */
+export const PAYMENT_REQUEST_CONTRACT_ADDRESS_BNB =
+  "0x78252F885Be985e9F9B96FADCe971Ee801cDD06B" as const;
+
+/**
  * Polygon Chain ID (where the PaymentRequest contract is deployed)
  */
 export const POLYGON_CHAIN_ID = 137;
+
+/**
+ * BNB Chain ID (where the PaymentRequest contract is also deployed)
+ */
+export const BNB_CHAIN_ID = 56;
 
 /**
  * Polygon Amoy Testnet Chain ID
@@ -636,15 +649,24 @@ export const PAYMENT_REQUEST_ABI = [
 
 /**
  * Helper function to get contract address based on network
+ * @param isTestnet - Whether to use testnet contract
+ * @param chainId - Optional chain ID to get specific chain contract (defaults to Polygon)
  */
 export const getPaymentRequestContractAddress = (
-  isTestnet: boolean
+  isTestnet: boolean,
+  chainId?: number,
 ): `0x${string}` => {
-  return (
-    isTestnet
-      ? PAYMENT_REQUEST_CONTRACT_ADDRESS_TESTNET
-      : PAYMENT_REQUEST_CONTRACT_ADDRESS
-  ) as `0x${string}`;
+  if (isTestnet) {
+    return PAYMENT_REQUEST_CONTRACT_ADDRESS_TESTNET as `0x${string}`;
+  }
+
+  // Return BNB chain contract if chainId is 56
+  if (chainId === BNB_CHAIN_ID) {
+    return PAYMENT_REQUEST_CONTRACT_ADDRESS_BNB as `0x${string}`;
+  }
+
+  // Default to Polygon mainnet
+  return PAYMENT_REQUEST_CONTRACT_ADDRESS as `0x${string}`;
 };
 
 /**

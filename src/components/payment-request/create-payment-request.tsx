@@ -32,6 +32,7 @@ import {
   formatPaymentId,
   getTokenInfo,
   POLYGON_CHAIN_ID,
+  BNB_CHAIN_ID,
 } from "@/constants/paymentRequest";
 import {
   PaymentRequestFormData,
@@ -63,7 +64,7 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
   // UI state
   const [createdPaymentId, setCreatedPaymentId] = useState<number | null>(null);
   const [transactionHash, setTransactionHash] = useState<`0x${string}` | null>(
-    null
+    null,
   );
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string>
@@ -77,7 +78,8 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
   // Supported tokens are now cross-chain
   const supportedTokens = SUPPORTED_PAYMENT_TOKENS;
 
-  // Check and switch to Polygon Mainnet when component loads
+  // Check and switch to appropriate network when component loads
+  // Supports both Polygon and BNB Chain for payment requests
   useEffect(() => {
     const checkAndSwitchNetwork = async () => {
       if (!isConnected || !chain) {
@@ -85,11 +87,14 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
         return;
       }
 
-      const targetChainId = POLYGON_CHAIN_ID; // 137
-      console.log("🌐 [Payment Request] Current chain:", chain.id);
-      console.log("🌐 [Payment Request] Target chain:", targetChainId);
+      // Support both Polygon and BNB Chain
+      const supportedChainIds = [POLYGON_CHAIN_ID, BNB_CHAIN_ID];
+      const defaultChainId = POLYGON_CHAIN_ID; // Default to Polygon
 
-      if (chain.id !== targetChainId) {
+      console.log("🌐 [Payment Request] Current chain:", chain.id);
+      console.log("🌐 [Payment Request] Supported chains:", supportedChainIds);
+
+      if (!supportedChainIds.includes(chain.id)) {
         console.warn("⚠️ [Payment Request] Wrong network detected");
 
         toast.error("Wrong Network", {
@@ -98,7 +103,7 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
 
         try {
           console.log("🔄 [Payment Request] Attempting to switch network...");
-          await switchChain({ chainId: targetChainId });
+          await switchChain({ chainId: defaultChainId });
           console.log("✅ [Payment Request] Network switched successfully");
           toast.success("Switched to Polygon Mainnet", {
             description: "You can now create payment requests",
@@ -106,16 +111,16 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
         } catch (error: any) {
           console.error(
             "❌ [Payment Request] Failed to switch network:",
-            error
+            error,
           );
           toast.error("Network Switch Required", {
             description:
-              "Please switch to Polygon Mainnet in your wallet to create payment requests",
+              "Please switch to Polygon or BNB Chain in your wallet to create payment requests",
             duration: 5000,
           });
         }
       } else {
-        console.log("✅ [Payment Request] Already on correct network");
+        console.log("✅ [Payment Request] Already on supported network");
       }
     };
 
@@ -173,18 +178,18 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
         return;
       }
 
-      // Check if on correct network before submitting
-      const targetChainId = POLYGON_CHAIN_ID; // 137
-      if (chain?.id !== targetChainId) {
+      // Check if on correct network before submitting (support both Polygon and BNB)
+      const supportedChainIds = [POLYGON_CHAIN_ID, BNB_CHAIN_ID];
+      if (chain?.id && !supportedChainIds.includes(chain.id)) {
         console.warn("⚠️ [Create Form] Wrong network detected");
         toast.error("Wrong Network", {
           description:
-            "Please switch to Polygon Mainnet to create payment requests",
+            "Please switch to Polygon or BNB Chain to create payment requests",
         });
 
         try {
           console.log("🔄 [Create Form] Attempting to switch network...");
-          await switchChain({ chainId: targetChainId });
+          await switchChain({ chainId: POLYGON_CHAIN_ID });
           toast.success("Switched to Polygon Mainnet");
         } catch (error) {
           console.error("❌ [Create Form] Failed to switch network:", error);
@@ -204,7 +209,7 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
           formData.merchantAddress,
           formData.selectedToken,
           formData.chainId,
-          formData.requestedAmount
+          formData.requestedAmount,
         );
 
         console.log("📥 [Create Form] Received result:", result);
@@ -214,7 +219,7 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
           console.log("🎯 [Create Form] Payment ID:", result.paymentId);
           console.log(
             "📝 [Create Form] Transaction hash:",
-            result.transactionHash
+            result.transactionHash,
           );
 
           setCreatedPaymentId(result.paymentId);
@@ -239,7 +244,7 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
         } else {
           console.error(
             "❌ [Create Form] Payment request creation failed:",
-            result.error
+            result.error,
           );
           toast.error("Failed to create payment request", {
             description: result.error,
@@ -262,7 +267,7 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
       createPaymentRequest,
       onSuccess,
       onError,
-    ]
+    ],
   );
 
   // Handle input changes
@@ -282,7 +287,7 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
         });
       }
     },
-    [validationErrors]
+    [validationErrors],
   );
 
   // Copy payment ID to clipboard

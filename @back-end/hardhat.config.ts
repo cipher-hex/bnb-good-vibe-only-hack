@@ -9,18 +9,20 @@ dotenv.config();
 const getPrivateKey = (): string | undefined => {
   const key = process.env.PRIVATE_KEY;
   if (!key) return undefined;
-  
+
   // Remove whitespace, quotes, and 0x prefix
-  let cleaned = key.trim().replace(/["']/g, '');
-  if (cleaned.startsWith('0x')) {
+  let cleaned = key.trim().replace(/["']/g, "");
+  if (cleaned.startsWith("0x")) {
     cleaned = cleaned.slice(2);
   }
-  
+
   // Validate length (should be 64 hex characters for 32 bytes)
   if (cleaned.length !== 64) {
-    console.warn(`⚠️  Warning: Private key length is ${cleaned.length}, expected 64 hex characters`);
+    console.warn(
+      `⚠️  Warning: Private key length is ${cleaned.length}, expected 64 hex characters`,
+    );
   }
-  
+
   return cleaned;
 };
 
@@ -44,15 +46,23 @@ const config: HardhatUserConfig = {
       chainId: 137,
     },
     polygonAmoy: {
-      url: process.env.POLYGON_AMOY_RPC_URL || "https://rpc-amoy.polygon.technology/",
+      url:
+        process.env.POLYGON_AMOY_RPC_URL ||
+        "https://rpc-amoy.polygon.technology/",
       accounts: getPrivateKey() ? [getPrivateKey()!] : [],
       chainId: 80002,
+    },
+    bsc: {
+      url: process.env.BSC_RPC_URL || "https://bsc-dataseed1.binance.org/",
+      accounts: getPrivateKey() ? [getPrivateKey()!] : [],
+      chainId: 56,
     },
   },
   etherscan: {
     apiKey: {
       polygon: process.env.POLYGONSCAN_API_KEY || "",
       polygonAmoy: process.env.POLYGONSCAN_API_KEY || "",
+      bsc: process.env.BSCSCAN_API_KEY || "",
     },
     customChains: [
       {
