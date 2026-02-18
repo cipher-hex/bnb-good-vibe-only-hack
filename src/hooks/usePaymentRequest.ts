@@ -88,9 +88,7 @@ export const useCreatePaymentRequest = (isTestnet: boolean = false) => {
 
       try {
         // Determine target chain ID based on testnet flag
-        const targetChainId = isTestnet
-          ? POLYGON_AMOY_CHAIN_ID
-          : POLYGON_CHAIN_ID;
+        const targetChainId = isTestnet ? POLYGON_AMOY_CHAIN_ID : BNB_CHAIN_ID;
 
         // Get contract address for the specific chain (supports BNB and Polygon)
         const contractAddress = getPaymentRequestContractAddress(
@@ -439,9 +437,7 @@ export const useMarkPaymentAsPaid = (isTestnet: boolean = false) => {
 
       try {
         // Determine target chain ID based on testnet flag
-        const targetChainId = isTestnet
-          ? POLYGON_AMOY_CHAIN_ID
-          : POLYGON_CHAIN_ID;
+        const targetChainId = isTestnet ? POLYGON_AMOY_CHAIN_ID : BNB_CHAIN_ID;
 
         // Get contract address for the specific chain (supports BNB and Polygon)
         const contractAddress = getPaymentRequestContractAddress(

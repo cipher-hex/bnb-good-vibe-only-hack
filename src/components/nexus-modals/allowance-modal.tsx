@@ -32,11 +32,13 @@ const AllowanceModal: React.FC<AllowanceModalProps> = ({
 }) => {
   const { nexusSdk } = useNexus();
   const [selectedAllowances, setSelectedAllowances] = useState<string[]>([]);
+  const [isApproving, setIsApproving] = useState(false);
   const { reset } = useBridgeStore();
 
   useEffect(() => {
     if (allowanceModal) {
       setSelectedAllowances(allowanceModal.sources.map(() => "min"));
+      setIsApproving(false);
     }
   }, [allowanceModal]);
 
@@ -120,6 +122,7 @@ const AllowanceModal: React.FC<AllowanceModalProps> = ({
     });
 
     console.log("Final processed allowances in modal:", processedAllowances);
+    setIsApproving(true);
     allow(processedAllowances);
     setAllowanceModal(null);
   };
@@ -136,11 +139,13 @@ const AllowanceModal: React.FC<AllowanceModalProps> = ({
   return (
     <Dialog
       open={!!allowanceModal}
-      onOpenChange={(isOpen) => !isOpen && handleDeny()}
+      onOpenChange={(isOpen) => !isOpen && !isApproving && handleDeny()}
     >
       <DialogContent className="w-md bg-white !shadow-[var(--ck-modal-box-shadow)] !rounded-[var(--ck-connectbutton-border-radius)] border-none">
         <DialogHeader>
-          <DialogTitle className="text-[#1E293B]">Set Token Allowances</DialogTitle>
+          <DialogTitle className="text-[#1E293B]">
+            Set Token Allowances
+          </DialogTitle>
           <DialogDescription className="text-[#64748B]">
             The following token allowances are required for this transaction.
             Please approve them.
@@ -202,11 +207,15 @@ const AllowanceModal: React.FC<AllowanceModalProps> = ({
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="max" id={`max-${index}`} />
-                  <Label htmlFor={`max-${index}`} className="text-[#1E293B]">Maximum (Unlimited)</Label>
+                  <Label htmlFor={`max-${index}`} className="text-[#1E293B]">
+                    Maximum (Unlimited)
+                  </Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="custom" id={`custom-${index}`} />
-                  <Label htmlFor={`custom-${index}`} className="text-[#1E293B]">Custom Amount</Label>
+                  <Label htmlFor={`custom-${index}`} className="text-[#1E293B]">
+                    Custom Amount
+                  </Label>
                 </div>
               </RadioGroup>
 

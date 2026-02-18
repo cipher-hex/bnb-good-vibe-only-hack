@@ -51,7 +51,8 @@ export const useTransferTransaction = () => {
    */
   const executeTransfer = useCallback(
     async (transferParams: TransferParams) => {
-      const { token, amount, chainId, recipient, sourceChains } = transferParams;
+      const { token, amount, chainId, recipient, sourceChains } =
+        transferParams;
 
       if (!token || !amount || !chainId || !recipient || !nexusSdk) {
         const errorMsg = "Missing required parameters for transfer transaction";
@@ -127,7 +128,8 @@ export const useTransferTransaction = () => {
    */
   const runTransferSimulation = useCallback(
     async (transferParams: TransferParams) => {
-      const { token, amount, chainId, recipient, sourceChains } = transferParams;
+      const { token, amount, chainId, recipient, sourceChains } =
+        transferParams;
 
       if (
         !token ||
@@ -161,17 +163,18 @@ export const useTransferTransaction = () => {
         setSimulation(result);
       } catch (error) {
         console.error("Transfer simulation failed:", error);
-        
+
         // Handle "CA not applicable" error with user-friendly message
         let errorMessage = "Simulation failed";
         if (error instanceof Error) {
           if (error.message.toLowerCase().includes("ca not applicable")) {
-            errorMessage = "You have sufficient balance on the destination chain for a direct transfer. No cross-chain routing needed.";
+            errorMessage =
+              "You have sufficient balance on the destination chain for a direct transfer. No cross-chain routing needed.";
           } else {
             errorMessage = error.message;
           }
         }
-        
+
         setSimulationError(errorMessage);
         setSimulation(null);
       } finally {
