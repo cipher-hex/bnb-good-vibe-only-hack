@@ -62,10 +62,15 @@ export const useTransferTransaction = () => {
       }
 
       try {
-        const transferTxn = await nexusSdk.transfer({
+        // Convert amount string to bigint (assuming 6 decimals for USDC/USDT)
+        const amountInSmallestUnit = BigInt(
+          Math.floor(parseFloat(amount) * 1_000_000),
+        );
+
+        const transferTxn = await nexusSdk.bridgeAndTransfer({
           token,
-          amount,
-          chainId,
+          amount: amountInSmallestUnit,
+          toChainId: chainId,
           recipient,
           ...(sourceChains && sourceChains.length > 0 && { sourceChains }),
         });
@@ -147,12 +152,17 @@ export const useTransferTransaction = () => {
         setIsSimulating(true);
         setSimulationError(null);
 
+        // Convert amount string to bigint (assuming 6 decimals for USDC/USDT)
+        const amountInSmallestUnit = BigInt(
+          Math.floor(parseFloat(amount) * 1_000_000),
+        );
+
         // Try to simulate transfer using SDK if available
         const result: SimulationResult | null =
-          await nexusSdk.simulateTransfer?.({
+          await nexusSdk.simulateBridgeAndTransfer?.({
             token,
-            amount,
-            chainId,
+            amount: amountInSmallestUnit,
+            toChainId: chainId,
             recipient,
             ...(sourceChains && sourceChains.length > 0 && { sourceChains }),
           });
