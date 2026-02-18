@@ -56,7 +56,7 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
   // Form state (extended with chain selection)
   const [formData, setFormData] = useState<PaymentRequestFormData>({
     merchantAddress: "" as `0x${string}`,
-    chainId: 137, // Default to Polygon
+    chainId: 56, // Default to BNB Chain
     selectedToken: "USDC" as SupportedPaymentToken,
     requestedAmount: "",
   });
@@ -87,9 +87,9 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
         return;
       }
 
-      // Support both Polygon and BNB Chain
-      const supportedChainIds = [POLYGON_CHAIN_ID, BNB_CHAIN_ID];
-      const defaultChainId = POLYGON_CHAIN_ID; // Default to Polygon
+      // Use only BNB Chain for payment requests
+      const supportedChainIds = [BNB_CHAIN_ID];
+      const defaultChainId = BNB_CHAIN_ID; // Default to BNB Chain
 
       console.log("🌐 [Payment Request] Current chain:", chain.id);
       console.log("🌐 [Payment Request] Supported chains:", supportedChainIds);
@@ -98,14 +98,14 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
         console.warn("⚠️ [Payment Request] Wrong network detected");
 
         toast.error("Wrong Network", {
-          description: "Switching to Polygon Mainnet...",
+          description: "Switching to BNB Chain Mainnet...",
         });
 
         try {
           console.log("🔄 [Payment Request] Attempting to switch network...");
           await switchChain({ chainId: defaultChainId });
           console.log("✅ [Payment Request] Network switched successfully");
-          toast.success("Switched to Polygon Mainnet", {
+          toast.success("Switched to BNB Chain Mainnet", {
             description: "You can now create payment requests",
           });
         } catch (error: any) {
@@ -115,7 +115,7 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
           );
           toast.error("Network Switch Required", {
             description:
-              "Please switch to Polygon or BNB Chain in your wallet to create payment requests",
+              "Please switch to BNB Chain in your wallet to create payment requests",
             duration: 5000,
           });
         }
@@ -178,19 +178,18 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
         return;
       }
 
-      // Check if on correct network before submitting (support both Polygon and BNB)
-      const supportedChainIds = [POLYGON_CHAIN_ID, BNB_CHAIN_ID];
+      // Check if on correct network before submitting (only BNB Chain)
+      const supportedChainIds = [BNB_CHAIN_ID];
       if (chain?.id && !supportedChainIds.includes(chain.id)) {
         console.warn("⚠️ [Create Form] Wrong network detected");
         toast.error("Wrong Network", {
-          description:
-            "Please switch to Polygon or BNB Chain to create payment requests",
+          description: "Please switch to BNB Chain to create payment requests",
         });
 
         try {
           console.log("🔄 [Create Form] Attempting to switch network...");
-          await switchChain({ chainId: POLYGON_CHAIN_ID });
-          toast.success("Switched to Polygon Mainnet");
+          await switchChain({ chainId: BNB_CHAIN_ID });
+          toast.success("Switched to BNB Chain Mainnet");
         } catch (error) {
           console.error("❌ [Create Form] Failed to switch network:", error);
           return;

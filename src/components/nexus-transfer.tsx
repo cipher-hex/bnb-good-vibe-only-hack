@@ -40,6 +40,7 @@ import {
   getTokenInfo,
   getChainInfo,
   POLYGON_CHAIN_ID,
+  BNB_CHAIN_ID,
   PAYMENT_STATUS_LABELS,
 } from "@/constants/paymentRequest";
 import { PaymentStatus, PaymentLoadingState } from "@/types/payment-request";
@@ -57,7 +58,7 @@ interface TransferState {
 
 const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
   const [state, setState] = useState<TransferState>({
-    selectedChain: SUPPORTED_CHAINS.ETHEREUM,
+    selectedChain: 56 as SUPPORTED_CHAINS_IDS, // Default to BNB Chain (56)
     selectedToken: undefined,
     recipientAddress: undefined,
     amount: "",
@@ -96,7 +97,11 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
     });
 
   // Payment request hooks
-  const { getPaymentRequest } = useGetPaymentRequest(null, isTestnet);
+  const { getPaymentRequest } = useGetPaymentRequest(
+    null,
+    isTestnet,
+    BNB_CHAIN_ID,
+  );
   const { markAsPaid, isMarking } = useMarkPaymentAsPaid(isTestnet);
 
   // Wallet and network hooks
@@ -183,8 +188,8 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
       return;
     }
 
-    // Check if connected to Polygon Mainnet
-    const targetChainId = POLYGON_CHAIN_ID; // 137
+    // Check if connected to BNB Chain Mainnet
+    const targetChainId = BNB_CHAIN_ID; // 56
     console.log("🌐 [Load Payment] Current chain:", chain?.id);
     console.log("🌐 [Load Payment] Target chain:", targetChainId);
 
@@ -192,7 +197,7 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
       console.warn("⚠️ [Load Payment] Wrong network detected");
 
       toast.error("Wrong Network", {
-        description: `Please switch to Polygon Mainnet to load payment requests`,
+        description: `Please switch to BNB Chain Mainnet to load payment requests`,
       });
 
       // Attempt to switch network
@@ -200,7 +205,7 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
         console.log("🔄 [Load Payment] Attempting to switch network...");
         await switchChain({ chainId: targetChainId });
         console.log("✅ [Load Payment] Network switched successfully");
-        toast.success("Switched to Polygon Mainnet");
+        toast.success("Switched to BNB Chain Mainnet");
         // Continue with loading after successful switch
       } catch (error: any) {
         console.error("❌ [Load Payment] Failed to switch network:", error);
@@ -208,7 +213,7 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
           ...prevState,
           paymentLoading: {
             ...prevState.paymentLoading,
-            error: "Please switch to Polygon Mainnet in your wallet",
+            error: "Please switch to BNB Chain Mainnet in your wallet",
           },
         }));
         return;
