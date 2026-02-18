@@ -6,7 +6,29 @@ import {
   SUPPORTED_CHAINS_IDS,
   SUPPORTED_TOKENS,
   SimulationResult,
+  BridgeAndExecuteSimulationResult,
+  NexusSDK,
+  TransferResult,
 } from "@avail-project/nexus-core";
+
+// Interface to handle potential stale type definitions in the IDE
+interface ExtendedNexusSDK extends NexusSDK {
+  bridgeAndTransfer(params: {
+    token: string;
+    amount: bigint;
+    toChainId: number;
+    recipient: string;
+    sourceChains?: number[];
+  }): Promise<TransferResult>;
+
+  simulateBridgeAndTransfer(params: {
+    token: string;
+    amount: bigint;
+    toChainId: number;
+    recipient: string;
+    sourceChains?: number[];
+  }): Promise<BridgeAndExecuteSimulationResult>;
+}
 
 interface ErrorWithCode extends Error {
   code?: number;
@@ -67,7 +89,9 @@ export const useTransferTransaction = () => {
           Math.floor(parseFloat(amount) * 1_000_000),
         );
 
-        const transferTxn = await nexusSdk.bridgeAndTransfer({
+        const transferTxn = await (
+          nexusSdk as unknown as ExtendedNexusSDK
+        ).bridgeAndTransfer({
           token,
           amount: amountInSmallestUnit,
           toChainId: chainId,
@@ -158,19 +182,20 @@ export const useTransferTransaction = () => {
         );
 
         // Try to simulate transfer using SDK if available
-        const result: SimulationResult | null =
-          await nexusSdk.simulateBridgeAndTransfer?.({
-            token,
-            amount: amountInSmallestUnit,
-            toChainId: chainId,
-            recipient,
-            ...(sourceChains && sourceChains.length > 0 && { sourceChains }),
-          });
+        const result: BridgeAndExecuteSimulationResult = await (
+          nexusSdk as unknown as ExtendedNexusSDK
+        ).simulateBridgeAndTransfer({
+          token,
+          amount: amountInSmallestUnit,
+          toChainId: chainId,
+          recipient,
+          ...(sourceChains && sourceChains.length > 0 && { sourceChains }),
+        });
 
         console.log("transfer sim", result);
         console.log("sourceChains param:", sourceChains);
 
-        setSimulation(result);
+        setSimulation(result.bridgeSimulation);
       } catch (error) {
         console.error("Transfer simulation failed:", error);
 
