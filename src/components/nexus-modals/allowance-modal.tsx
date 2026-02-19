@@ -32,13 +32,11 @@ const AllowanceModal: React.FC<AllowanceModalProps> = ({
 }) => {
   const { nexusSdk } = useNexus();
   const [selectedAllowances, setSelectedAllowances] = useState<string[]>([]);
-  const [isApproving, setIsApproving] = useState(false);
   const { reset } = useBridgeStore();
 
   useEffect(() => {
     if (allowanceModal) {
       setSelectedAllowances(allowanceModal.sources.map(() => "min"));
-      setIsApproving(false);
     }
   }, [allowanceModal]);
 
@@ -122,7 +120,6 @@ const AllowanceModal: React.FC<AllowanceModalProps> = ({
     });
 
     console.log("Final processed allowances in modal:", processedAllowances);
-    setIsApproving(true);
     allow(processedAllowances);
     setAllowanceModal(null);
   };
@@ -139,7 +136,7 @@ const AllowanceModal: React.FC<AllowanceModalProps> = ({
   return (
     <Dialog
       open={!!allowanceModal}
-      onOpenChange={(isOpen) => !isOpen && !isApproving && handleDeny()}
+      onOpenChange={(isOpen) => !isOpen && handleDeny()}
     >
       <DialogContent className="w-md bg-white !shadow-[var(--ck-modal-box-shadow)] !rounded-[var(--ck-connectbutton-border-radius)] border-none">
         <DialogHeader>

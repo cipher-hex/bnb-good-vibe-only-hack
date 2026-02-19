@@ -7,17 +7,10 @@ import { toast } from "sonner";
 import { useAccount, useSwitchChain } from "wagmi";
 import { useNexus } from "@/provider/NexusProvider";
 import {
+  SUPPORTED_CHAINS,
   SUPPORTED_CHAINS_IDS,
   SUPPORTED_TOKENS,
 } from "@avail-project/nexus-core";
-import {
-  BNB_CHAIN_ID,
-  PAYMENT_STATUS_LABELS,
-} from "@/constants/paymentRequest";
-import {
-  useGetPaymentRequest,
-  useMarkPaymentAsPaid,
-} from "@/hooks/usePaymentRequest";
 import ChainSelect from "./blocks/chain-select";
 import TokenSelect from "./blocks/token-select";
 import { SourceChainSelector } from "./blocks/source-chain-selector";
@@ -38,24 +31,19 @@ import { Label } from "./ui/label";
 import { Badge } from "./ui/badge";
 import { AlertTriangle, CheckCircle, Search } from "lucide-react";
 import {
+  useGetPaymentRequest,
+  useMarkPaymentAsPaid,
+} from "@/hooks/usePaymentRequest";
+import {
   formatPaymentId,
   parsePaymentId,
+  getTokenInfo,
   getChainInfo,
+  POLYGON_CHAIN_ID,
+  BNB_CHAIN_ID,
+  PAYMENT_STATUS_LABELS,
 } from "@/constants/paymentRequest";
-
-// Define local types
-interface PaymentLoadingState {
-  paymentId: string;
-  isLoading: boolean;
-  data: any | null;
-  error: string | null;
-}
-
-enum PaymentStatus {
-  PENDING = 0,
-  FULFILLED = 1,
-  CANCELLED = 2,
-}
+import { PaymentStatus, PaymentLoadingState } from "@/types/payment-request";
 
 interface TransferState {
   selectedChain: SUPPORTED_CHAINS_IDS;
@@ -295,7 +283,7 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
           ? new Date(result.data.paidAt * 1000)
           : null,
         statusLabel: PAYMENT_STATUS_LABELS[result.data.status],
-        isActive: result.data.status === PaymentStatus.PENDING,
+        isActive: result.data.status === PaymentStatus.Pending,
       };
 
       setState((prevState) => ({
@@ -388,8 +376,7 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
 
       console.log("result", result);
 
-      // Check if result has transactionHash (success case) or error property
-      if (result && "transactionHash" in result) {
+      if (result.success) {
         // If this was a payment request fulfillment, mark it as paid
         if (state.isPaymentMode && state.paymentLoading.data && walletAddress) {
           try {
@@ -551,10 +538,10 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
                     <Badge
                       variant={
                         state.paymentLoading.data.status ===
-                        PaymentStatus.PENDING
+                        PaymentStatus.Pending
                           ? "default"
                           : state.paymentLoading.data.status ===
-                              PaymentStatus.FULFILLED
+                              PaymentStatus.Paid
                             ? "secondary"
                             : "destructive"
                       }
@@ -581,13 +568,12 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
               </div>
 
               {/* Warning for non-pending payments */}
-              {state.paymentLoading.data.status !== PaymentStatus.PENDING && (
+              {state.paymentLoading.data.status !== PaymentStatus.Pending && (
                 <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded-md">
                   <div className="flex items-center gap-2">
                     <AlertTriangle className="w-4 h-4 text-yellow-600" />
                     <span className="text-sm text-yellow-800">
-                      {state.paymentLoading.data.status ===
-                      PaymentStatus.FULFILLED
+                      {state.paymentLoading.data.status === PaymentStatus.Paid
                         ? "This payment request has already been fulfilled"
                         : "This payment request has been cancelled"}
                     </span>

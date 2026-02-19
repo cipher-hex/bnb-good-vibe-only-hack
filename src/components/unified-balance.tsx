@@ -25,7 +25,7 @@ const UnifiedBalance = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const unifiedBalance = await nexusSdk.getBalancesForBridge();
+      const unifiedBalance = await nexusSdk.getUnifiedBalances();
       console.log("unifiedBalance", unifiedBalance);
       setBalance(unifiedBalance);
     } catch (error: unknown) {

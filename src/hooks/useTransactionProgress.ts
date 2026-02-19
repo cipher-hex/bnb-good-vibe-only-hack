@@ -6,7 +6,7 @@ import { formatStepName } from "@/lib/bridge/formatters";
 import { toast } from "sonner";
 import { StepCompletionEventData, TransactionType } from "@/types/transaction";
 import { useSDKTransactionHistory } from "./useSDKTransactionHistory";
-// NEXUS_EVENTS removed as it's not used in this component
+import { NEXUS_EVENTS, ProgressStep } from "@avail-project/nexus-core";
 
 interface TransactionProgressOptions {
   transactionType?: TransactionType;
@@ -26,7 +26,7 @@ export const useTransactionProgress = (
 ) => {
   const { transactionType = "bridge" } = options;
 
-  // nexusSdk removed as event handling is now done through onEvent callbacks
+  const { nexusSdk } = useNexus();
   const [explorerURL, setExplorerURL] = useState<string>("");
 
   // Store selectors
@@ -156,18 +156,44 @@ export const useTransactionProgress = (
   }, [progressSteps.length, completedStepsCount]);
 
   /**
-   * Subscribe to SDK events - Note: Event handling is now done through onEvent callbacks in SDK methods
+   * Subscribe to SDK events
    */
   useEffect(() => {
-    // Event handling is now done through onEvent callbacks in individual SDK method calls
-    // This useEffect is kept for potential future event handling needs
+    // Add event listeners
+    nexusSdk?.nexusEvents.on(
+      transactionType === "bridge-execute"
+        ? NEXUS_EVENTS.BRIDGE_EXECUTE_EXPECTED_STEPS
+        : NEXUS_EVENTS.EXPECTED_STEPS,
+      (steps: ProgressStep[]) => {
+        setProgressSteps(steps.map((step) => ({ ...step, done: false })));
+      },
+    );
+    nexusSdk?.nexusEvents.on(
+      transactionType === "bridge-execute"
+        ? NEXUS_EVENTS.BRIDGE_EXECUTE_COMPLETED_STEPS
+        : NEXUS_EVENTS.STEP_COMPLETE,
+      handleStepComplete,
+    );
+
     return () => {
-      // Cleanup if needed
+      nexusSdk?.nexusEvents.off(
+        transactionType === "bridge-execute"
+          ? NEXUS_EVENTS.BRIDGE_EXECUTE_EXPECTED_STEPS
+          : NEXUS_EVENTS.EXPECTED_STEPS,
+        setProgressSteps,
+      );
+      nexusSdk?.nexusEvents.off(
+        transactionType === "bridge-execute"
+          ? NEXUS_EVENTS.BRIDGE_EXECUTE_COMPLETED_STEPS
+          : NEXUS_EVENTS.STEP_COMPLETE,
+        handleStepComplete,
+      );
     };
   }, [
     setProgressSteps,
     handleStepComplete,
     handleTransactionError,
+    nexusSdk?.nexusEvents,
     transactionType,
   ]);
 

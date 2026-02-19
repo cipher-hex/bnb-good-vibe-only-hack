@@ -62,15 +62,10 @@ export const useTransferTransaction = () => {
       }
 
       try {
-        // Convert amount string to bigint (assuming 6 decimals for USDC/USDT)
-        const amountInSmallestUnit = BigInt(
-          Math.floor(parseFloat(amount) * 1_000_000),
-        );
-
-        const transferTxn = await nexusSdk.bridgeAndTransfer({
+        const transferTxn = await nexusSdk.transfer({
           token,
-          amount: amountInSmallestUnit,
-          toChainId: chainId,
+          amount,
+          chainId,
           recipient,
           ...(sourceChains && sourceChains.length > 0 && { sourceChains }),
         });
@@ -152,26 +147,20 @@ export const useTransferTransaction = () => {
         setIsSimulating(true);
         setSimulationError(null);
 
-        // Convert amount string to bigint (assuming 6 decimals for USDC/USDT)
-        const amountInSmallestUnit = BigInt(
-          Math.floor(parseFloat(amount) * 1_000_000),
-        );
-
         // Try to simulate transfer using SDK if available
-        const result = await nexusSdk.simulateBridgeAndTransfer?.({
-          token,
-          amount: amountInSmallestUnit,
-          toChainId: chainId,
-          recipient,
-          ...(sourceChains && sourceChains.length > 0 && { sourceChains }),
-        });
+        const result: SimulationResult | null =
+          await nexusSdk.simulateTransfer?.({
+            token,
+            amount,
+            chainId,
+            recipient,
+            ...(sourceChains && sourceChains.length > 0 && { sourceChains }),
+          });
 
         console.log("transfer sim", result);
         console.log("sourceChains param:", sourceChains);
 
-        // Extract the bridge simulation from the result
-        const bridgeSimulation = result?.bridgeSimulation || null;
-        setSimulation(bridgeSimulation);
+        setSimulation(result);
       } catch (error) {
         console.error("Transfer simulation failed:", error);
 
