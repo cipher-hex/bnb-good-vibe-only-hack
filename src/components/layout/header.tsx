@@ -35,15 +35,15 @@ const tabs = [
 
 const Header = ({ activeTab, onTabChange, isTestnet }: HeaderProps) => {
   return (
-    <header className="w-full sticky top-0 z-50 bg-white shadow-lg">
+    <header className="w-full sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="w-full px-4 sm:px-6 py-4">
         <div className="flex items-center justify-between mb-4">
           <Link href="/" className="flex items-center">
             <div className="flex flex-col">
-              <span className="text-xl font-semibold text-[#1E293B]">
+              <span className="text-xl font-semibold text-foreground">
                 Trans-Pay
               </span>
-              <span className="text-xs text-[#64748B]">
+              <span className="text-xs text-muted-foreground">
                 Cross-Chain Payment Requests
               </span>
             </div>
@@ -51,8 +51,8 @@ const Header = ({ activeTab, onTabChange, isTestnet }: HeaderProps) => {
           <ConnectWallet />
         </div>
 
-        <nav className="flex items-center justify-center gap-1 sm:gap-2 border-t border-[#E1ECF7] pt-4 relative">
-          <div className="flex items-center gap-1 sm:gap-2 flex-wrap justify-center">
+        <nav className="flex items-center justify-center gap-1 sm:gap-2 pt-2 relative">
+          <div className="flex items-center gap-1 sm:gap-2 flex-wrap justify-center bg-muted/50 p-1 rounded-xl">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.value;
@@ -61,11 +61,11 @@ const Header = ({ activeTab, onTabChange, isTestnet }: HeaderProps) => {
                   key={tab.value}
                   onClick={() => onTabChange(tab.value)}
                   className={`
-                    flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl font-medium transition-all duration-200
+                    flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg font-medium transition-all duration-200 text-sm
                     ${
                       isActive
-                        ? "bg-[#2563EB] text-white shadow-md"
-                        : "bg-[#EFF6FF] text-[#2563EB] hover:bg-[#DBEAFE] hover:shadow-sm"
+                        ? "bg-background text-foreground shadow-sm ring-1 ring-black/5"
+                        : "text-muted-foreground hover:text-foreground hover:bg-background/50"
                     }
                   `}
                 >
@@ -77,7 +77,7 @@ const Header = ({ activeTab, onTabChange, isTestnet }: HeaderProps) => {
             })}
           </div>
           {isTestnet && (
-            <span className="absolute right-0 text-xs text-[#EF4444] bg-[#FEE2E2] px-3 py-1 rounded-full">
+            <span className="absolute right-0 top-4 text-xs text-destructive bg-destructive/10 px-3 py-1 rounded-full hidden sm:inline-block">
               Devnet Mode
             </span>
           )}

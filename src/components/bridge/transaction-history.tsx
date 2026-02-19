@@ -56,7 +56,7 @@ export const TransactionHistory: React.FC = () => {
         <h3 className="text-lg font-semibold">Bridge Assets</h3>
         <Button
           onClick={() => setShowHistory(!showHistory)}
-          className="flex items-center gap-2 bg-white text-[#2563EB] border border-[#2563EB] hover:bg-[#F3F4F6] transition-colors shadow-sm"
+          className="flex items-center gap-2 bg-card text-primary border border-primary hover:bg-accent hover:text-accent-foreground transition-colors shadow-sm"
         >
           <History className="w-4 h-4" />
           History ({totalCount})
@@ -65,7 +65,7 @@ export const TransactionHistory: React.FC = () => {
 
       {/* Transaction History Panel */}
       {showHistory && (
-        <Card className="!shadow-[var(--ck-modal-box-shadow)] !rounded-[var(--ck-connectbutton-border-radius)] bg-accent-foreground border-none gap-y-1">
+        <Card className="shadow-sm rounded-xl bg-card border-none gap-y-1">
           <CardHeader>
             <CardTitle className="text-sm font-semibold">
               Recent Transactions
@@ -76,7 +76,7 @@ export const TransactionHistory: React.FC = () => {
               {transactions.map((tx: RequestForFunds) => (
                 <div
                   key={tx.id.toString()}
-                  className="px-4 py-2 rounded-lg border border-border bg-background/50"
+                  className="px-4 py-2 rounded-lg border border-border bg-muted/40"
                 >
                   {/* Header with Status and Explorer Link */}
                   <div className="flex items-center justify-between w-full">
@@ -85,7 +85,7 @@ export const TransactionHistory: React.FC = () => {
                       <Link
                         href={`https://explorer.nexus.availproject.org/intent/${tx.id}`}
                         target="_blank"
-                        className="hover:bg-transparent hover:text-secondary cursor-pointer flex items-center gap-x-2 text-sm font-semibold"
+                        className="hover:text-primary cursor-pointer flex items-center gap-x-2 text-sm font-semibold transition-colors"
                       >
                         View on Explorer
                         <ExternalLink className="w-4 h-4" />

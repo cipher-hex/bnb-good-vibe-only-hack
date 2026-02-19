@@ -176,15 +176,13 @@ const PaymentLoader: React.FC<PaymentLoaderProps> = ({
   };
 
   return (
-    <Card
-      className={`border-blue-200 bg-blue-50/50 dark:bg-blue-950/20 dark:border-blue-800 ${className}`}
-    >
+    <Card className={`border-border bg-card shadow-sm ${className}`}>
       <CardHeader className="pb-3">
-        <CardTitle className="text-lg flex items-center gap-2 text-blue-900 dark:text-blue-100">
-          <Search className="w-5 h-5" />
+        <CardTitle className="text-lg flex items-center gap-2 text-foreground">
+          <Search className="w-5 h-5 text-primary" />
           Pay with Payment ID (Optional)
         </CardTitle>
-        <CardDescription className="text-blue-700 dark:text-blue-300">
+        <CardDescription className="text-muted-foreground">
           Enter a payment ID to auto-fill transfer details for a payment request
         </CardDescription>
       </CardHeader>
@@ -196,33 +194,31 @@ const PaymentLoader: React.FC<PaymentLoaderProps> = ({
               value={paymentId}
               onChange={handlePaymentIdChange}
               disabled={isLoading || isPaymentMode}
-              className="border-blue-200 dark:border-blue-700 bg-white dark:bg-blue-950/50 focus:border-blue-400"
+              className="border-input bg-background focus:border-ring"
             />
           </div>
           <Button
             onClick={loadPaymentRequest}
             disabled={isLoading || !paymentId.trim() || isPaymentMode}
-            className="px-4 bg-blue-600 hover:bg-blue-700 text-white"
+            className="px-4"
           >
             {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Load"}
           </Button>
         </div>
 
         {error && (
-          <div className="mt-3 p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-md flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-red-500" />
-            <span className="text-sm text-red-700 dark:text-red-300">
-              {error}
-            </span>
+          <div className="mt-3 p-3 bg-destructive/10 border border-destructive/20 rounded-md flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-destructive" />
+            <span className="text-sm text-destructive">{error}</span>
           </div>
         )}
 
         {paymentData && (
-          <div className="mt-3 p-4 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 rounded-md">
+          <div className="mt-3 p-4 bg-secondary/50 border border-border rounded-md">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600" />
-                <span className="font-semibold text-green-800 dark:text-green-200">
+                <span className="font-semibold text-foreground">
                   Payment Request Loaded
                 </span>
               </div>
@@ -230,7 +226,7 @@ const PaymentLoader: React.FC<PaymentLoaderProps> = ({
                 variant="ghost"
                 size="sm"
                 onClick={clearPayment}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                className="text-muted-foreground hover:text-foreground"
               >
                 <X className="w-4 h-4" />
               </Button>
@@ -238,17 +234,13 @@ const PaymentLoader: React.FC<PaymentLoaderProps> = ({
 
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div>
-                <Label className="text-gray-600 dark:text-gray-400">
-                  Payment ID
-                </Label>
-                <div className="font-mono text-gray-900 dark:text-gray-100">
+                <Label className="text-muted-foreground">Payment ID</Label>
+                <div className="font-mono text-foreground">
                   {formatPaymentId(parsePaymentId(paymentId) || 0)}
                 </div>
               </div>
               <div>
-                <Label className="text-gray-600 dark:text-gray-400">
-                  Status
-                </Label>
+                <Label className="text-muted-foreground">Status</Label>
                 <div>
                   <Badge
                     variant={
@@ -265,18 +257,14 @@ const PaymentLoader: React.FC<PaymentLoaderProps> = ({
                 </div>
               </div>
               <div>
-                <Label className="text-gray-600 dark:text-gray-400">
-                  Amount
-                </Label>
-                <div className="text-gray-900 dark:text-gray-100">
+                <Label className="text-muted-foreground">Amount</Label>
+                <div className="text-foreground">
                   {paymentData.formattedAmount} {paymentData.tokenSymbol}
                 </div>
               </div>
               <div>
-                <Label className="text-gray-600 dark:text-gray-400">
-                  Merchant
-                </Label>
-                <div className="font-mono text-xs text-gray-900 dark:text-gray-100">
+                <Label className="text-muted-foreground">Merchant</Label>
+                <div className="font-mono text-xs text-foreground">
                   {paymentData.merchant.slice(0, 8)}...
                   {paymentData.merchant.slice(-6)}
                 </div>

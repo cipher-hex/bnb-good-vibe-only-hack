@@ -49,7 +49,7 @@ const UnifiedBalance = () => {
 
   if (error) {
     return (
-      <div className="w-full max-w-2xl mx-auto p-4 text-red-500">
+      <div className="w-full max-w-2xl mx-auto p-4 text-destructive bg-destructive/10 rounded-lg border border-destructive/20">
         Error: {error}
       </div>
     );
@@ -57,7 +57,7 @@ const UnifiedBalance = () => {
 
   if (isLoading) {
     return (
-      <div className="w-full max-w-2xl mx-auto p-4 text-center flex items-center justify-center">
+      <div className="w-full max-w-2xl mx-auto p-4 text-center flex items-center justify-center text-muted-foreground">
         <Loader2 className="w-8 h-8 animate-spin" />
       </div>
     );
@@ -65,19 +65,19 @@ const UnifiedBalance = () => {
 
   return (
     <div className="w-full max-w-2xl mx-auto py-4 flex flex-col gap-y-2 items-center">
-      <div className="flex items-ceter justify-start w-full">
+      <div className="flex items-center justify-start w-full">
         <Label className="font-semibold text-muted-foreground">
           Total Balance:
         </Label>
 
-        <Label className="text-lg font-bold gap-x-0">
+        <Label className="text-lg font-bold gap-x-0 text-foreground">
           <DollarSign className="w-4 h-4 font-bold" strokeWidth={3} />
           {balance
             ?.reduce((acc, fiat) => acc + fiat.balanceInFiat, 0)
             .toFixed(2)}
         </Label>
       </div>
-      <div className="w-full max-h-[350px] overflow-y-scroll overflow-x-hidden">
+      <div className="w-full max-h-[350px] overflow-y-scroll overflow-x-hidden p-1">
         <Accordion type="single" collapsible className="w-full space-y-4">
           {balance
             ?.filter((token) => parseFloat(token.balance) > 0)
@@ -86,7 +86,7 @@ const UnifiedBalance = () => {
                 key={token.symbol}
                 value={token.symbol}
                 removeLastBorder={true}
-                className="px-4 !shadow-[var(--ck-connectbutton-box-shadow)] !rounded-[var(--ck-connectbutton-border-radius)]"
+                className="px-4 shadow-sm rounded-xl border border-border bg-card"
               >
                 <AccordionTrigger className="hover:no-underline cursor-pointer">
                   <div className="flex items-center justify-between w-full pr-4">
@@ -102,13 +102,15 @@ const UnifiedBalance = () => {
                         )}
                       </div>
                       <div className="text-left">
-                        <h3 className="font-semibold">{token.symbol}</h3>
+                        <h3 className="font-semibold text-foreground">
+                          {token.symbol}
+                        </h3>
                         <p className="text-sm text-muted-foreground">
                           ${token.balanceInFiat.toFixed(2)}
                         </p>
                       </div>
                     </div>
-                    <p className="text-lg font-medium">
+                    <p className="text-lg font-medium text-foreground">
                       {formatBalance(token.balance, 6)}
                     </p>
                   </div>
@@ -119,7 +121,7 @@ const UnifiedBalance = () => {
                       .filter((chain) => parseFloat(chain.balance) > 0)
                       .map((chain, index, filteredChains) => (
                         <React.Fragment key={chain.chain.id}>
-                          <div className="flex items-center justify-between px-2 py-1 rounded-md">
+                          <div className="flex items-center justify-between px-2 py-1 rounded-md hover:bg-muted/50 transition-colors">
                             <div className="flex items-center gap-2">
                               <div className="relative h-6 w-6">
                                 <Image
@@ -130,12 +132,12 @@ const UnifiedBalance = () => {
                                   className="rounded-full"
                                 />
                               </div>
-                              <span className="text-sm">
+                              <span className="text-sm text-foreground">
                                 {chain.chain.name}
                               </span>
                             </div>
                             <div className="text-right">
-                              <p className="text-sm font-medium">
+                              <p className="text-sm font-medium text-foreground">
                                 {formatBalance(chain.balance, chain.decimals)}
                               </p>
                               <p className="text-xs text-muted-foreground">

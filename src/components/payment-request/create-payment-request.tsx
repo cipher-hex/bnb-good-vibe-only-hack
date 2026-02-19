@@ -304,21 +304,21 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
     <div className={`flex flex-col gap-y-4 py-4 ${className}`}>
       {/* Success State - Show created payment ID */}
       {createdPaymentId && (
-        <Card className="border-green-500 bg-green-50 rounded-2xl">
+        <Card className="border-green-500 bg-green-50 dark:bg-green-950/20 rounded-2xl">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <CheckCircle className="w-6 h-6 text-green-600" />
               <div className="flex-1">
-                <div className="text-lg font-semibold text-green-800 mb-1">
+                <div className="text-lg font-semibold text-green-800 dark:text-green-200 mb-1">
                   Payment Request Created!
                 </div>
-                <div className="text-sm text-green-700 mb-2">
+                <div className="text-sm text-green-700 dark:text-green-300 mb-2">
                   Share this Payment ID with your customer:
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge
                     variant="outline"
-                    className="text-lg font-mono bg-white px-3 py-1"
+                    className="text-lg font-mono bg-card text-foreground px-3 py-1"
                   >
                     {formatPaymentId(createdPaymentId)}
                   </Badge>
@@ -326,7 +326,7 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
                     variant="ghost"
                     size="sm"
                     onClick={copyPaymentId}
-                    className="h-8 px-2 text-green-600 hover:text-green-700"
+                    className="h-8 px-2 text-green-600 hover:text-green-700 hover:bg-green-100 dark:hover:bg-green-900/50"
                   >
                     {showCopiedFeedback ? (
                       <CheckCircle className="w-4 h-4" />
@@ -338,15 +338,15 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
               </div>
             </div>
             {transactionHash && (
-              <div className="mt-3 pt-3 border-t border-green-200">
-                <div className="text-sm text-green-700 mb-1 font-medium">
+              <div className="mt-3 pt-3 border-t border-green-200 dark:border-green-800">
+                <div className="text-sm text-green-700 dark:text-green-300 mb-1 font-medium">
                   Transaction Hash:
                 </div>
                 <a
                   href={`https://polygonscan.com/tx/${transactionHash}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-green-600 hover:text-green-800 hover:underline font-mono break-all flex items-start gap-1"
+                  className="text-xs text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-200 hover:underline font-mono break-all flex items-start gap-1"
                 >
                   <span>{transactionHash}</span>
                   <svg
@@ -371,9 +371,9 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
 
       {/* Error State */}
       {createError && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-xl flex items-center gap-2">
-          <AlertTriangle className="w-4 h-4 text-red-500" />
-          <span className="text-red-700 text-sm">{createError}</span>
+        <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-xl flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 text-destructive" />
+          <span className="text-destructive text-sm">{createError}</span>
         </div>
       )}
 
@@ -385,7 +385,7 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
             <div className="space-y-2">
               <Label
                 htmlFor="merchantAddress"
-                className="text-sm font-semibold text-gray-700"
+                className="text-sm font-semibold text-foreground"
               >
                 Merchant Address
               </Label>
@@ -398,8 +398,10 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
                   onChange={(e) =>
                     handleInputChange("merchantAddress", e.target.value)
                   }
-                  className={`pr-20 h-12 rounded-xl bg-white border-blue-100 focus:border-blue-400 focus:ring-blue-100 ${
-                    validationErrors.merchantAddress ? "border-red-500" : ""
+                  className={`pr-20 h-12 rounded-xl bg-background border-input focus:border-ring focus:ring-ring/20 ${
+                    validationErrors.merchantAddress
+                      ? "border-destructive focus:border-destructive"
+                      : ""
                   }`}
                 />
                 {address && (
@@ -408,14 +410,14 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
                     variant="ghost"
                     size="sm"
                     onClick={setMerchantToSelf}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-xs px-2 py-1 h-7 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-xs px-2 py-1 h-7 bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded-lg"
                   >
                     Use Mine
                   </Button>
                 )}
               </div>
               {validationErrors.merchantAddress && (
-                <p className="text-sm text-red-600">
+                <p className="text-sm text-destructive">
                   {validationErrors.merchantAddress}
                 </p>
               )}
@@ -425,7 +427,7 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Blockchain Selection */}
               <div className="space-y-2">
-                <Label className="text-sm font-semibold text-gray-700">
+                <Label className="text-sm font-semibold text-foreground">
                   Destination Blockchain
                 </Label>
                 <Select
@@ -435,8 +437,8 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
                   }
                 >
                   <SelectTrigger
-                    className={`h-12 rounded-xl bg-white border-blue-100 focus:ring-blue-100 ${
-                      validationErrors.chainId ? "border-red-500" : ""
+                    className={`h-12 rounded-xl bg-background border-input focus:ring-ring/20 ${
+                      validationErrors.chainId ? "border-destructive" : ""
                     }`}
                   >
                     <SelectValue placeholder="Select Chain" />
@@ -457,7 +459,7 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
                   </SelectContent>
                 </Select>
                 {validationErrors.chainId && (
-                  <p className="text-xs text-red-600">
+                  <p className="text-xs text-destructive">
                     {validationErrors.chainId}
                   </p>
                 )}
@@ -465,7 +467,7 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
 
               {/* Token Selection */}
               <div className="space-y-2">
-                <Label className="text-sm font-semibold text-gray-700">
+                <Label className="text-sm font-semibold text-foreground">
                   Payment Token
                 </Label>
                 <Select
@@ -475,8 +477,8 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
                   }
                 >
                   <SelectTrigger
-                    className={`h-12 rounded-xl bg-white border-blue-100 focus:ring-blue-100 ${
-                      validationErrors.selectedToken ? "border-red-500" : ""
+                    className={`h-12 rounded-xl bg-background border-input focus:ring-ring/20 ${
+                      validationErrors.selectedToken ? "border-destructive" : ""
                     }`}
                   >
                     <SelectValue placeholder="Select Token" />
@@ -502,7 +504,7 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
                   </SelectContent>
                 </Select>
                 {validationErrors.selectedToken && (
-                  <p className="text-xs text-red-600">
+                  <p className="text-xs text-destructive">
                     {validationErrors.selectedToken}
                   </p>
                 )}
@@ -512,7 +514,7 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
               <div className="space-y-2">
                 <Label
                   htmlFor="amount"
-                  className="text-sm font-semibold text-gray-700"
+                  className="text-sm font-semibold text-foreground"
                 >
                   Requested Amount
                 </Label>
@@ -527,16 +529,18 @@ const CreatePaymentRequest: React.FC<CreatePaymentRequestProps> = ({
                     onChange={(e) =>
                       handleInputChange("requestedAmount", e.target.value)
                     }
-                    className={`pr-16 h-12 rounded-xl bg-white border-blue-100 focus:border-blue-400 focus:ring-blue-100 ${
-                      validationErrors.requestedAmount ? "border-red-500" : ""
+                    className={`pr-16 h-12 rounded-xl bg-background border-input focus:border-ring focus:ring-ring/20 ${
+                      validationErrors.requestedAmount
+                        ? "border-destructive"
+                        : ""
                     }`}
                   />
-                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-lg">
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-muted-foreground bg-secondary px-2 py-1 rounded-lg">
                     {formData.selectedToken}
                   </div>
                 </div>
                 {validationErrors.requestedAmount && (
-                  <p className="text-xs text-red-600">
+                  <p className="text-xs text-destructive">
                     {validationErrors.requestedAmount}
                   </p>
                 )}

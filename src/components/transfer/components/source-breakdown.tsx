@@ -69,14 +69,14 @@ const SourceBreakdown = ({
 
   const coverageToneClass =
     sourceCoverageState === "error"
-      ? "text-rose-500"
+      ? "text-destructive"
       : sourceCoverageState === "warning"
         ? "text-amber-500"
         : "text-emerald-500";
 
   const coverageSurfaceClass =
     sourceCoverageState === "error"
-      ? "border-rose-500/30 bg-rose-500/10 text-rose-950 dark:text-rose-200"
+      ? "border-destructive/30 bg-destructive/10 text-destructive dark:text-destructive-foreground"
       : sourceCoverageState === "warning"
         ? "border-amber-500/30 bg-amber-500/10 text-amber-950 dark:text-amber-200"
         : "border-emerald-500/30 bg-emerald-500/10 text-emerald-950 dark:text-emerald-200";

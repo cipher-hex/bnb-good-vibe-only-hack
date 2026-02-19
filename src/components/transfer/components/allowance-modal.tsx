@@ -85,7 +85,7 @@ const AllowanceOption: FC<AllowanceOptionProps> = ({
         onChange={() => onSelect(index, choice)}
         className="peer sr-only"
       />
-      <div className="flex flex-col gap-3 rounded-xl border border-border/40 bg-background/40 px-4 py-3 transition peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-primary/50 peer-checked:border-primary peer-checked:bg-primary/10 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 rounded-xl border border-border bg-card px-4 py-3 transition peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-ring/50 peer-checked:border-primary peer-checked:bg-primary/5 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center justify-between w-full">
           <div>
             <p className="text-sm font-medium leading-tight">{title}</p>
@@ -222,11 +222,11 @@ const AllowanceModal: FC<AllowanceModalProps> = ({
         {sources?.map((source: AllowanceHookSource, index: number) => (
           <div
             key={`${source.token.symbol}-${index}`}
-            className="rounded-2xl border border-border/40 bg-muted/10 p-4 shadow-sm transition hover:border-border"
+            className="rounded-2xl border border-border bg-muted/30 p-4 shadow-sm transition hover:border-border/80"
           >
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-background shadow-inner">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-background shadow-sm border border-border/50">
                   <img
                     src={CHAIN_METADATA[source.chain.id]?.logo}
                     alt={source.chain.name}

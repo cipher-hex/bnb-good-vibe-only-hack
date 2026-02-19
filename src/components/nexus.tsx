@@ -31,13 +31,13 @@ interface NexusProps {
 
 const Nexus = ({ isTestnet, activeTab }: NexusProps) => {
   return (
-    <Card className="bg-white shadow-2xl rounded-3xl border-none mx-auto w-[95%] max-w-4xl overflow-hidden">
-      <div className="bg-white">
+    <Card className="bg-card shadow-xl rounded-3xl border-none mx-auto w-[95%] max-w-4xl overflow-hidden">
+      <div className="bg-card">
         <CardHeader className="flex flex-col w-full items-center px-8 pt-8 pb-6">
-          <CardTitle className="text-3xl font-bold text-[#1E293B] mb-2">
+          <CardTitle className="text-3xl font-bold text-foreground mb-2">
             Welcome to Trans-Pay
           </CardTitle>
-          <CardDescription className="text-center text-[#64748B] max-w-2xl text-base">
+          <CardDescription className="text-center text-muted-foreground max-w-2xl text-base">
             Create payment requests, accept payments from any blockchain, and
             manage cross-chain transfers seamlessly. The future of decentralized
             payments.
@@ -45,7 +45,7 @@ const Nexus = ({ isTestnet, activeTab }: NexusProps) => {
         </CardHeader>
 
         <CardContent className="px-4 md:px-8 pb-8">
-          <div className="bg-[#F8FAFF] rounded-2xl p-6">
+          <div className="bg-muted/30 rounded-2xl p-6">
             <NexusContentWrapper>
               {/* Information Card for each tab */}
               <TabInfoCard activeTab={activeTab} />
@@ -72,7 +72,7 @@ const TabInfoCard = ({ activeTab }: { activeTab: string }) => {
   const tabInfo = {
     "nexus-ui": {
       title: "Nexus UI Elements",
-      icon: <Zap className="w-5 h-5 text-orange-600" />,
+      icon: <Zap className="w-5 h-5 text-primary" />,
       description:
         "Explore powerful cross-chain DeFi components powered by Avail Nexus Elements",
       features: [
@@ -84,7 +84,7 @@ const TabInfoCard = ({ activeTab }: { activeTab: string }) => {
     },
     "unified-balance": {
       title: "Unified Balance Overview",
-      icon: <TrendingUp className="w-5 h-5 text-blue-600" />,
+      icon: <TrendingUp className="w-5 h-5 text-primary" />,
       description:
         "View all your token balances across multiple blockchains in one place",
       features: [
@@ -96,7 +96,7 @@ const TabInfoCard = ({ activeTab }: { activeTab: string }) => {
     },
     bridge: {
       title: "Cross-Chain Bridge",
-      icon: <ArrowRightLeft className="w-5 h-5 text-green-600" />,
+      icon: <ArrowRightLeft className="w-5 h-5 text-primary" />,
       description:
         "Transfer tokens seamlessly between different blockchain networks",
       features: [
@@ -108,7 +108,7 @@ const TabInfoCard = ({ activeTab }: { activeTab: string }) => {
     },
     transfer: {
       title: "Direct Transfers & Payment Fulfillment",
-      icon: <DollarSign className="w-5 h-5 text-purple-600" />,
+      icon: <DollarSign className="w-5 h-5 text-primary" />,
       description:
         "Send tokens to any address or fulfill payment requests from any supported network",
       features: [
@@ -120,7 +120,7 @@ const TabInfoCard = ({ activeTab }: { activeTab: string }) => {
     },
     "payment-request": {
       title: "Payment Request System",
-      icon: <CreditCard className="w-5 h-5 text-indigo-600" />,
+      icon: <CreditCard className="w-5 h-5 text-primary" />,
       description:
         "Create secure on-chain payment requests with unique IDs for your business",
       features: [
@@ -137,24 +137,24 @@ const TabInfoCard = ({ activeTab }: { activeTab: string }) => {
   if (!info) return null;
 
   return (
-    <Alert className="mb-6 border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+    <Alert className="mb-6 border-border bg-muted/50">
       <div className="flex items-start gap-4">
         <div className="mt-0.5">{info.icon}</div>
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
-            <h3 className="font-semibold text-gray-900">{info.title}</h3>
-            <Info className="w-4 h-4 text-blue-500" />
+            <h3 className="font-semibold text-foreground">{info.title}</h3>
+            <Info className="w-4 h-4 text-muted-foreground" />
           </div>
-          <AlertDescription className="text-gray-700 mb-3">
+          <AlertDescription className="text-muted-foreground mb-3">
             {info.description}
           </AlertDescription>
           <div className="space-y-1">
             {info.features.map((feature, index) => (
               <div
                 key={index}
-                className="flex items-start gap-2 text-sm text-gray-600"
+                className="flex items-start gap-2 text-sm text-muted-foreground"
               >
-                <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
                 <span>{feature}</span>
               </div>
             ))}

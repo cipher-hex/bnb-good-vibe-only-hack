@@ -47,7 +47,7 @@ export const SourceChainSelector: React.FC<SourceChainSelectorProps> = ({
 
   // Filter out destination chain from available chains
   const selectableChains = availableChains.filter(
-    (chain) => chain.chainId !== destinationChainId
+    (chain) => chain.chainId !== destinationChainId,
   );
 
   // Calculate total available balance from selected chains
@@ -92,7 +92,9 @@ export const SourceChainSelector: React.FC<SourceChainSelectorProps> = ({
       return "All available chains";
     }
     if (selectedChainIds.length === 1) {
-      const chain = selectableChains.find((c) => c.chainId === selectedChainIds[0]);
+      const chain = selectableChains.find(
+        (c) => c.chainId === selectedChainIds[0],
+      );
       return chain?.chainName || "1 chain selected";
     }
     return `${selectedChainIds.length} chains selected`;
@@ -101,13 +103,13 @@ export const SourceChainSelector: React.FC<SourceChainSelectorProps> = ({
   return (
     <div className="flex flex-col items-start gap-y-1 w-full">
       <Label className="text-sm font-semibold">Source Chains (Optional)</Label>
-      
+
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button
             variant="outline"
             disabled={disabled || selectableChains.length === 0}
-            className="w-full justify-between h-auto py-3 px-4 shadow-[var(--ck-connectbutton-box-shadow)] rounded-[var(--ck-connectbutton-border-radius)] border-none hover:bg-[#F3F4F6]"
+            className="w-full justify-between h-auto py-3 px-4 shadow-sm rounded-xl border-none hover:bg-accent"
           >
             <div className="flex flex-col items-start gap-1 flex-1">
               <span className="text-sm font-medium">{getDisplayText()}</span>
@@ -119,11 +121,12 @@ export const SourceChainSelector: React.FC<SourceChainSelectorProps> = ({
           </Button>
         </DialogTrigger>
 
-        <DialogContent className="max-w-md bg-white border-none shadow-2xl rounded-2xl">
+        <DialogContent className="max-w-md bg-card border border-muted rounded-2xl">
           <DialogHeader>
             <DialogTitle className="text-xl">Select Source Chains</DialogTitle>
             <DialogDescription>
-              Choose which chains to use for this transfer. Leave empty to use all available chains automatically.
+              Choose which chains to use for this transfer. Leave empty to use
+              all available chains automatically.
             </DialogDescription>
           </DialogHeader>
 
@@ -151,7 +154,8 @@ export const SourceChainSelector: React.FC<SourceChainSelectorProps> = ({
             {/* Selected Count Badge */}
             {selectedChainIds.length > 0 && (
               <Badge variant="secondary" className="w-full justify-center">
-                {selectedChainIds.length} of {selectableChains.length} chains selected
+                {selectedChainIds.length} of {selectableChains.length} chains
+                selected
               </Badge>
             )}
 
@@ -170,9 +174,9 @@ export const SourceChainSelector: React.FC<SourceChainSelectorProps> = ({
                       className={cn(
                         "w-full p-3 rounded-xl border-2 transition-all text-left",
                         isSelected
-                          ? "border-[#2563EB] bg-[#EFF6FF]"
-                          : "border-[#E5E7EB] hover:border-[#93C5FD] bg-white",
-                        isDisabled && "opacity-50 cursor-not-allowed"
+                          ? "border-primary bg-primary/10"
+                          : "border-border hover:border-primary/50 bg-card",
+                        isDisabled && "opacity-50 cursor-not-allowed",
                       )}
                     >
                       <div className="flex items-center gap-3">
@@ -181,35 +185,40 @@ export const SourceChainSelector: React.FC<SourceChainSelectorProps> = ({
                           className={cn(
                             "w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0",
                             isSelected
-                              ? "bg-[#2563EB] border-[#2563EB]"
-                              : "border-[#D1D5DB]"
+                              ? "bg-primary border-primary"
+                              : "border-input",
                           )}
                         >
-                          {isSelected && <Check className="w-3 h-3 text-white" />}
+                          {isSelected && (
+                            <Check className="w-3 h-3 text-primary-foreground" />
+                          )}
                         </div>
 
                         {/* Chain Info */}
                         <div className="flex items-center gap-2 flex-1">
                           <Image
-                            src={chain.logo || CHAIN_METADATA[chain.chainId]?.logo}
+                            src={
+                              chain.logo || CHAIN_METADATA[chain.chainId]?.logo
+                            }
                             alt={chain.chainName}
                             width={32}
                             height={32}
                             className="rounded-full"
                           />
                           <div className="flex flex-col flex-1">
-                            <span className="text-sm font-semibold text-[#1E293B]">
+                            <span className="text-sm font-semibold text-foreground">
                               {chain.chainName}
                             </span>
                             <span
                               className={cn(
                                 "text-xs",
                                 chain.hasBalance
-                                  ? "text-[#2563EB] font-medium"
-                                  : "text-[#94A3B8]"
+                                  ? "text-primary font-medium"
+                                  : "text-muted-foreground",
                               )}
                             >
-                              {parseFloat(chain.balance).toFixed(6)} {tokenSymbol}
+                              {parseFloat(chain.balance).toFixed(6)}{" "}
+                              {tokenSymbol}
                             </span>
                           </div>
                         </div>
@@ -228,10 +237,12 @@ export const SourceChainSelector: React.FC<SourceChainSelectorProps> = ({
             </ScrollArea>
 
             {/* Summary */}
-            <div className="p-3 bg-[#F8FAFF] rounded-xl border border-[#E1ECF7]">
+            <div className="p-3 bg-muted/30 rounded-xl border border-border">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-[#64748B]">Total Available:</span>
-                <span className="text-sm font-bold text-[#2563EB]">
+                <span className="text-sm text-muted-foreground">
+                  Total Available:
+                </span>
+                <span className="text-sm font-bold text-primary">
                   {getTotalBalance()} {tokenSymbol}
                 </span>
               </div>
@@ -240,7 +251,7 @@ export const SourceChainSelector: React.FC<SourceChainSelectorProps> = ({
             {/* Apply Button */}
             <Button
               onClick={() => setIsOpen(false)}
-              className="w-full bg-[#2563EB] hover:bg-[#1D4ED8]"
+              className="w-full bg-primary hover:bg-primary/90"
             >
               Apply Selection
             </Button>

@@ -20,8 +20,8 @@ const NexusUI: React.FC<NexusUIProps> = ({
     switch (activeTab) {
       case "unified-balance":
         return (
-          <div className="flex flex-col items-center justify-center p-4 bg-white dark:bg-gray-900 rounded-xl border border-blue-100 dark:border-blue-900">
-            <UnifiedBalance className="[&_*]:text-gray-900 dark:[&_*]:text-gray-100" />
+          <div className="flex flex-col items-center justify-center p-4 rounded-xl">
+            <UnifiedBalance />
           </div>
         );
       case "swap":

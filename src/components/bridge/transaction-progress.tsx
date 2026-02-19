@@ -21,13 +21,15 @@ export const TransactionProgress: React.FC = () => {
   const currentStep = progressSteps.find((step) => !step.done);
 
   return (
-    <div className="flex flex-col items-center gap-y-2 w-full shadow-[var(--ck-primary-button-box-shadow)] !rounded-[var(--ck-primary-button-border-radius)] p-2">
+    <div className="flex flex-col items-center gap-y-2 w-full shadow-sm rounded-xl border border-border bg-card p-3">
       <div className="flex flex-col items-start gap-y-2 w-full">
-        <span className="text-sm font-medium">Transaction Progress</span>
+        <span className="text-sm font-medium text-foreground">
+          Transaction Progress
+        </span>
         {currentStep && (
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-x-1 w-full">
-              <Clock className="w-3 h-3 text-blue-500" />
+              <Clock className="w-3 h-3 text-primary" />
               <span className="text-xs text-muted-foreground">
                 {formatStepName(currentStep.type)}
               </span>

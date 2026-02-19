@@ -135,9 +135,9 @@ const SourceAssetSelect: FC<SourceAssetSelectProps> = ({
           }
         }}
       >
-        <div className="flex bg-input/30 w-full px-2 py-1.5">
+        <div className="flex bg-muted rounded-md w-full px-3 py-2">
           <div className="flex items-center gap-x-2 w-full justify-between">
-            <Search className="size-5 opacity-65" />
+            <Search className="size-5 text-muted-foreground" />
             <input
               placeholder="Search tokens..."
               value={searchQuery}

@@ -138,12 +138,12 @@ const AllowanceModal: React.FC<AllowanceModalProps> = ({
       open={!!allowanceModal}
       onOpenChange={(isOpen) => !isOpen && handleDeny()}
     >
-      <DialogContent className="w-md bg-white !shadow-[var(--ck-modal-box-shadow)] !rounded-[var(--ck-connectbutton-border-radius)] border-none">
+      <DialogContent className="w-md bg-card shadow-xl rounded-xl border-none">
         <DialogHeader>
-          <DialogTitle className="text-[#1E293B]">
+          <DialogTitle className="text-foreground">
             Set Token Allowances
           </DialogTitle>
-          <DialogDescription className="text-[#64748B]">
+          <DialogDescription className="text-muted-foreground">
             The following token allowances are required for this transaction.
             Please approve them.
           </DialogDescription>
@@ -152,10 +152,10 @@ const AllowanceModal: React.FC<AllowanceModalProps> = ({
           {sources?.map((source: AllowanceHookSource, index: number) => (
             <div
               key={source.token.symbol ?? index}
-              className="p-3 border !rounded-[var(--ck-connectbutton-border-radius)]"
+              className="p-3 border border-border rounded-xl"
             >
               <div className="flex items-center gap-x-2">
-                <p className="font-semibold text-[#1E293B]">
+                <p className="font-semibold text-foreground">
                   Token: {source.token.symbol} on {source.chain.name}
                 </p>
                 <Image
@@ -165,18 +165,18 @@ const AllowanceModal: React.FC<AllowanceModalProps> = ({
                   height={20}
                 />
               </div>
-              <div className="flex justify-between items-center text-sm text-[#64748B]">
+              <div className="flex justify-between items-center text-sm text-muted-foreground">
                 <span>Current Allowance</span>
-                <span className="font-bold text-[#1E293B]">
+                <span className="font-bold text-foreground">
                   {nexusSdk?.utils.formatBalance(
                     source.allowance.current,
                     source.token.decimals,
                   )}
                 </span>
               </div>
-              <div className="flex justify-between items-center text-sm text-[#64748B]">
+              <div className="flex justify-between items-center text-sm text-muted-foreground">
                 <span>Required Allowance</span>
-                <span className="font-bold text-[#1E293B]">
+                <span className="font-bold text-foreground">
                   {nexusSdk?.utils.formatBalance(
                     source.allowance.minimum,
                     source.token.decimals,
@@ -193,7 +193,7 @@ const AllowanceModal: React.FC<AllowanceModalProps> = ({
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="min" id={`min-${index}`} />
-                  <Label htmlFor={`min-${index}`} className="text-[#1E293B]">
+                  <Label htmlFor={`min-${index}`} className="text-foreground">
                     Minimum (
                     {nexusSdk?.utils.formatBalance(
                       source.allowance.minimum,
@@ -204,13 +204,16 @@ const AllowanceModal: React.FC<AllowanceModalProps> = ({
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="max" id={`max-${index}`} />
-                  <Label htmlFor={`max-${index}`} className="text-[#1E293B]">
+                  <Label htmlFor={`max-${index}`} className="text-foreground">
                     Maximum (Unlimited)
                   </Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="custom" id={`custom-${index}`} />
-                  <Label htmlFor={`custom-${index}`} className="text-[#1E293B]">
+                  <Label
+                    htmlFor={`custom-${index}`}
+                    className="text-foreground"
+                  >
                     Custom Amount
                   </Label>
                 </div>
@@ -231,7 +234,7 @@ const AllowanceModal: React.FC<AllowanceModalProps> = ({
                   onChange={(e) =>
                     handleCustomAmountChange(index, e.target.value)
                   }
-                  className="mt-4 w-full !shadow-[var(--ck-connectbutton-box-shadow)] !rounded-[var(--ck-connectbutton-border-radius)] border-none focus-visible:outline-none"
+                  className="mt-4 w-full shadow-sm rounded-lg border-input focus-visible:outline-none bg-background"
                 />
               )}
             </div>
@@ -240,13 +243,13 @@ const AllowanceModal: React.FC<AllowanceModalProps> = ({
         <DialogFooter className="gap-2 sm:justify-end mt-4">
           <Button
             onClick={handleDeny}
-            className="bg-[#EF4444] hover:bg-[#374151] font-semibold text-white transition-colors"
+            className="bg-destructive hover:bg-destructive/90 font-semibold text-destructive-foreground transition-colors"
           >
             Deny
           </Button>
           <Button
             onClick={handleApprove}
-            className="bg-[#2563EB] hover:bg-[#374151] font-semibold text-white transition-colors"
+            className="bg-primary hover:bg-primary/90 font-semibold text-primary-foreground transition-colors"
           >
             Approve Selected
           </Button>

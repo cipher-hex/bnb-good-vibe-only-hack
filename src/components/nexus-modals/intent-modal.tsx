@@ -77,13 +77,13 @@ const IntentModal: React.FC<IntentModalProps> = ({
       open={!!intentModal}
       onOpenChange={(isOpen) => !isOpen && handleDeny()}
     >
-      <DialogContent className="w-[28rem] bg-white border-none !shadow-[var(--ck-modal-box-shadow)] !rounded-[var(--ck-connectbutton-border-radius)] gap-y-3">
+      <DialogContent className="w-[28rem] bg-card border-none shadow-xl rounded-xl gap-y-3">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-[#1E293B]">
+          <DialogTitle className="flex items-center gap-2 text-foreground">
             <TrendingUp className="w-5 h-5" />
             Confirm Transaction
           </DialogTitle>
-          <DialogDescription className="text-[#64748B]">
+          <DialogDescription className="text-muted-foreground">
             Please review the details of this transaction carefully.
           </DialogDescription>
         </DialogHeader>
@@ -98,7 +98,7 @@ const IntentModal: React.FC<IntentModalProps> = ({
                   intent.sources.map((source: IntentSource, index) => (
                     <div
                       key={`${source.chainID}-${index}`}
-                      className="flex flex-col justify-center items-center gap-y-1 px-3 py-2 bg-muted/10 shadow-[var(--ck-tertiary-box-shadow)] !rounded-[var(--ck-tertiary-border-radius)]"
+                      className="flex flex-col justify-center items-center gap-y-1 px-3 py-2 bg-muted/30 shadow-sm rounded-xl border border-border"
                     >
                       <Image
                         src={CHAIN_METADATA[source.chainID]?.logo ?? ""}
@@ -111,7 +111,7 @@ const IntentModal: React.FC<IntentModalProps> = ({
                         }}
                       />
                       <div className="flex items-center gap-x-2">
-                        <div className="text-card-foreground font-bold text-center text-sm">
+                        <div className="text-foreground font-bold text-center text-sm">
                           {source.amount} {intent.token?.symbol}
                         </div>
                       </div>
@@ -121,7 +121,7 @@ const IntentModal: React.FC<IntentModalProps> = ({
                 {intent.sources &&
                   intent.sources.length > 1 &&
                   intent.sourcesTotal && (
-                    <div className="text-xs text-center text-muted-foreground font-bold border-t border-muted pt-2">
+                    <div className="text-xs text-center text-muted-foreground font-bold border-t border-border pt-2">
                       Total: {intent.sourcesTotal} {intent.token?.symbol}
                     </div>
                   )}
@@ -145,7 +145,7 @@ const IntentModal: React.FC<IntentModalProps> = ({
               <ArrowRight className="w-5 h-5 text-muted-foreground flex-shrink-0" />
 
               {/* Destination Chain */}
-              <div className="flex flex-col justify-center items-center gap-y-1 px-3 py-2 flex-1 bg-muted/10 shadow-[var(--ck-tertiary-box-shadow)] !rounded-[var(--ck-tertiary-border-radius)]">
+              <div className="flex flex-col justify-center items-center gap-y-1 px-3 py-2 flex-1 bg-muted/30 shadow-sm rounded-xl border border-border">
                 {intent.destination && (
                   <>
                     <Image
@@ -160,7 +160,7 @@ const IntentModal: React.FC<IntentModalProps> = ({
                         e.currentTarget.style.display = "none";
                       }}
                     />
-                    <div className="text-card-foreground font-bold text-center text-sm">
+                    <div className="text-foreground font-bold text-center text-sm">
                       {intent.destination.amount} {intent.token?.symbol}
                     </div>
                   </>
@@ -172,7 +172,7 @@ const IntentModal: React.FC<IntentModalProps> = ({
           {/* Fees Section */}
           {intent.fees && (
             <div className="space-y-3 mt-6">
-              <div className="p-4 bg-muted/10 rounded-[var(--ck-tertiary-border-radius)] shadow-[var(--ck-tertiary-box-shadow)] space-y-3">
+              <div className="p-4 bg-muted/30 rounded-xl shadow-sm border border-border space-y-3">
                 {/* Individual Fees */}
                 <div className="space-y-2 font-semibold">
                   <div className="flex justify-between items-center">
@@ -254,7 +254,7 @@ const IntentModal: React.FC<IntentModalProps> = ({
           <div className="flex w-full justify-center items-center gap-4">
             <Button
               onClick={handleDeny}
-              className="bg-[#EF4444] hover:bg-[#374151] font-semibold w-1/2 text-white transition-colors"
+              className="bg-destructive hover:bg-destructive/90 font-semibold w-1/2 text-destructive-foreground transition-colors"
             >
               Deny
             </Button>
@@ -262,8 +262,8 @@ const IntentModal: React.FC<IntentModalProps> = ({
               onClick={handleAllow}
               disabled={isRefreshing}
               className={cn(
-                "bg-[#2563EB] hover:bg-[#374151] font-semibold w-1/2 text-white transition-colors",
-                isRefreshing && "bg-gray-500 cursor-not-allowed",
+                "bg-primary hover:bg-primary/90 font-semibold w-1/2 text-primary-foreground transition-colors",
+                isRefreshing && "opacity-50 cursor-not-allowed",
               )}
             >
               {isRefreshing ? "Refreshing..." : "Allow"}

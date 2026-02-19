@@ -8,29 +8,29 @@ const alertVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-white text-[#1E293B] border-[#E1ECF7]",
+        default: "bg-background text-foreground border-border",
         destructive:
-          "bg-[#FEF2F2] border-[#FCA5A5] text-[#991B1B] [&>svg]:text-[#EF4444]",
+          "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive",
         warning:
-          "bg-[#FEF3C7] border-[#FCD34D] text-[#92400E] [&>svg]:text-[#F59E0B]",
-        info:
-          "bg-[#EFF6FF] border-[#93C5FD] text-[#1E40AF] [&>svg]:text-[#2563EB]",
+          "bg-amber-500/15 border-amber-500/30 text-amber-700 dark:text-amber-400 [&>svg]:text-amber-600 dark:[&>svg]:text-amber-400",
+        info: "bg-blue-500/15 border-blue-500/30 text-blue-700 dark:text-blue-400 [&>svg]:text-blue-600 dark:[&>svg]:text-blue-400",
         success:
-          "bg-[#F0FDF4] border-[#86EFAC] text-[#14532D] [&>svg]:text-[#22C55E]"
-      }
+          "bg-green-500/15 border-green-500/30 text-green-700 dark:text-green-400 [&>svg]:text-green-600 dark:[&>svg]:text-green-400",
+      },
     },
     defaultVariants: {
-      variant: "default"
-    }
-  }
+      variant: "default",
+    },
+  },
 );
 
 const Alert = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants> & {
-    icon?: React.ReactNode;
-    onClose?: () => void;
-  }
+  React.HTMLAttributes<HTMLDivElement> &
+    VariantProps<typeof alertVariants> & {
+      icon?: React.ReactNode;
+      onClose?: () => void;
+    }
 >(({ className, variant, icon, onClose, children, ...props }, ref) => {
   const getDefaultIcon = () => {
     switch (variant) {

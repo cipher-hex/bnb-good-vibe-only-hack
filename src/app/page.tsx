@@ -79,19 +79,19 @@ export default function Home() {
         onTabChange={setActiveTab}
         isTestnet={isTestnet}
       />
-      <main className="w-full min-h-screen bg-[#EFF6FF]">
+      <main className="w-full min-h-screen bg-background">
         <div className="w-full pt-8 pb-12 flex flex-col gap-y-6 items-center justify-start px-4">
-          <Card className="bg-white shadow-2xl rounded-3xl border-none mx-auto w-[95%] max-w-4xl overflow-hidden">
+          <Card className="bg-card shadow-xl rounded-3xl border-border mx-auto w-[95%] max-w-4xl overflow-hidden">
             <CardHeader className="flex flex-col w-full items-center px-8 pt-8 pb-6">
-              <CardTitle className="text-3xl font-bold text-[#1E293B] mb-2">
+              <CardTitle className="text-3xl font-bold text-foreground mb-2">
                 {headerContent.title}
               </CardTitle>
-              <CardDescription className="text-center text-[#64748B] max-w-2xl text-base">
+              <CardDescription className="text-center text-muted-foreground max-w-2xl text-base">
                 {headerContent.description}
               </CardDescription>
             </CardHeader>
             <CardContent className="px-4 md:px-8 pb-8">
-              <div className="bg-[#F8FAFF] rounded-2xl p-6">
+              <div className="bg-secondary/30 rounded-2xl p-6">
                 {renderContent()}
               </div>
             </CardContent>

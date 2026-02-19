@@ -63,7 +63,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
                   height={24}
                   className="rounded-full"
                 />
-                <p className="text-primary test-sm">
+                <p className="text-foreground text-sm">
                   {selectedChainData?.name}
                 </p>
               </div>
@@ -85,7 +85,7 @@ const ChainSelect: FC<ChainSelectProps> = ({
                     height={24}
                     className="rounded-full"
                   />
-                  <p className="text-primary test-sm">{chain.name}</p>
+                  <p className="text-foreground text-sm">{chain.name}</p>
                 </div>
               </SelectItem>
             );

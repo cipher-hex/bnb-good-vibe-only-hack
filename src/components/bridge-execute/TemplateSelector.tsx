@@ -27,26 +27,26 @@ const TemplateSelector: React.FC<TemplateSelectorProps> = ({
   const getRiskColor = (risk: string) => {
     switch (risk) {
       case "low":
-        return "bg-green-100 text-green-800 border-green-300";
+        return "bg-green-500/15 text-green-700 dark:text-green-400 border-green-500/30";
       case "medium":
-        return "bg-yellow-100 text-yellow-800 border-yellow-300";
+        return "bg-yellow-500/15 text-yellow-700 dark:text-yellow-400 border-yellow-500/30";
       case "high":
-        return "bg-red-100 text-red-800 border-red-300";
+        return "bg-destructive/15 text-destructive border-destructive/30";
       default:
-        return "bg-gray-100 text-gray-800 border-gray-300";
+        return "bg-secondary text-secondary-foreground border-secondary";
     }
   };
 
   const getCategoryColor = (category: string) => {
     switch (category) {
       case "lending":
-        return "bg-blue-100 text-blue-800 border-blue-300";
+        return "bg-blue-500/15 text-blue-700 dark:text-blue-400 border-blue-500/30";
       case "staking":
-        return "bg-purple-100 text-purple-800 border-purple-300";
+        return "bg-purple-500/15 text-purple-700 dark:text-purple-400 border-purple-500/30";
       case "defi":
-        return "bg-orange-100 text-orange-800 border-orange-300";
+        return "bg-orange-500/15 text-orange-700 dark:text-orange-400 border-orange-500/30";
       default:
-        return "bg-gray-100 text-gray-800 border-gray-300";
+        return "bg-secondary text-secondary-foreground border-secondary";
     }
   };
 
@@ -68,22 +68,22 @@ const TemplateSelector: React.FC<TemplateSelectorProps> = ({
       <div className="grid grid-cols-1 gap-3">
         <Card
           className={cn(
-            "cursor-pointer transition-all duration-200 bg-secondary/20 gap-y-0 border-none !shadow-[var(--ck-connectbutton-balance-connectbutton-box-shadow)]",
-            disabled && "pointer-events-none cursor-not-allowed"
+            "cursor-pointer transition-all duration-200 bg-card gap-y-0 border-border shadow-sm",
+            disabled && "pointer-events-none cursor-not-allowed opacity-50",
           )}
         >
           <CardHeader className="pb-0">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
                 <div>
-                  <CardTitle className="text-lg flex flex-col gap-y-2">
+                  <CardTitle className="text-lg flex flex-col gap-y-2 text-foreground">
                     <div className="flex items-center justify-between">
                       <div className="flex gap-2">
                         <Badge
                           variant="outline"
                           className={cn(
                             "text-xs",
-                            getCategoryColor(selectedTemplate.category)
+                            getCategoryColor(selectedTemplate.category),
                           )}
                         >
                           {selectedTemplate.category}
@@ -92,7 +92,7 @@ const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                           variant="outline"
                           className={cn(
                             "text-xs",
-                            getRiskColor(selectedTemplate.riskLevel)
+                            getRiskColor(selectedTemplate.riskLevel),
                           )}
                         >
                           {selectedTemplate.riskLevel} risk
@@ -101,7 +101,7 @@ const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                     </div>
                     {selectedTemplate.name}
                   </CardTitle>
-                  <CardDescription className="text-sm">
+                  <CardDescription className="text-sm text-muted-foreground">
                     {selectedTemplate.description}
                   </CardDescription>
                 </div>
@@ -112,10 +112,10 @@ const TemplateSelector: React.FC<TemplateSelectorProps> = ({
             <p className="text-sm text-muted-foreground mt-2">
               {selectedTemplate.expectedOutcome}
             </p>
-            <div className="mt-3 pt-3 border-t">
+            <div className="mt-3 pt-3 border-t border-border">
               <Button
                 size="sm"
-                className="w-full rounded-full bg-background/10 text-primary shadow-2xl border border-border hover:bg-accent/20"
+                className="w-full rounded-full bg-muted text-primary shadow-sm border border-border hover:bg-accent"
               >
                 Selected ✓
               </Button>

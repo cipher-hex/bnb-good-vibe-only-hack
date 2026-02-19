@@ -77,7 +77,7 @@ function SwapWidget({
       return;
     }
     const isValidSource = swapBalance?.find(
-      (bal) => bal.symbol === inputs.toToken?.symbol
+      (bal) => bal.symbol === inputs.toToken?.symbol,
     );
     if (!isValidSource) {
       const switched: SwapInputs = {
@@ -133,7 +133,7 @@ function SwapWidget({
 
   return (
     <>
-      <div className="w-full max-w-md bg-background/40 rounded-2xl px-2.5 py-2 sm:p-6 border border-border">
+      <div className="w-full max-w-md bg-card text-card-foreground rounded-2xl px-2.5 py-2 sm:p-6 border border-border shadow-sm">
         <div className="flex flex-col items-center w-full relative">
           <div
             ref={sourceContainer}

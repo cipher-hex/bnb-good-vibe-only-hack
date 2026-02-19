@@ -176,7 +176,7 @@ const UnifiedBalance = ({ className }: { className?: string }) => {
         totalFiat={totalFiat}
         tokens={tokens}
         className={cn(
-          "w-full max-w-lg mx-auto py-4 px-1 sm:p-4 flex flex-col gap-y-2 items-center overflow-y-scroll max-h-93 rounded-lg border border-border",
+          "w-full max-w-lg mx-auto py-4 px-1 sm:p-4 flex flex-col gap-y-2 items-center overflow-y-scroll max-h-93 rounded-xl border border-border bg-card text-card-foreground shadow-sm",
           className,
         )}
       />
@@ -186,7 +186,7 @@ const UnifiedBalance = ({ className }: { className?: string }) => {
   return (
     <Tabs
       defaultValue="bridgeBalance"
-      className="w-full max-w-lg py-4 px-1 sm:p-4 flex flex-col gap-y-2 items-center rounded-lg border border-border"
+      className="w-full max-w-lg py-4 px-1 sm:p-4 flex flex-col gap-y-2 items-center rounded-xl border border-border bg-card text-card-foreground shadow-sm"
     >
       <TabsList className="w-full">
         <TabsTrigger value="bridgeBalance">

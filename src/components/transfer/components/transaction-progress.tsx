@@ -1,4 +1,9 @@
-import { Check, Circle, LoaderPinwheel, SquareArrowOutUpRight } from "lucide-react";
+import {
+  Check,
+  Circle,
+  LoaderPinwheel,
+  SquareArrowOutUpRight,
+} from "lucide-react";
 import { type FC, memo, useMemo } from "react";
 import {
   type BridgeStepType,
@@ -39,10 +44,12 @@ const StepList: FC<{ steps: DisplayStep[]; currentIndex: number }> = memo(
 
           let rightIcon = <Circle className="size-5 text-muted-foreground" />;
           if (isCompleted) {
-            rightIcon = <Check className="size-5 text-green-600" />;
+            rightIcon = (
+              <Check className="size-5 text-green-600 dark:text-green-500" />
+            );
           } else if (isCurrent) {
             rightIcon = (
-              <LoaderPinwheel className="size-5 animate-spin text-muted-foreground" />
+              <LoaderPinwheel className="size-5 animate-spin text-primary" />
             );
           }
 
@@ -60,7 +67,7 @@ const StepList: FC<{ steps: DisplayStep[]; currentIndex: number }> = memo(
         })}
       </div>
     );
-  }
+  },
 );
 StepList.displayName = "StepList";
 
@@ -91,7 +98,7 @@ const TransactionProgress: FC<TransactionProgressProps> = ({
       "Filled on destination",
     ];
     const thresholds = milestones.map(
-      (_, idx) => (idx + 1) / milestones.length
+      (_, idx) => (idx + 1) / milestones.length,
     );
     const displaySteps: DisplayStep[] = milestones.map((label, idx) => ({
       id: `M${idx}`,
@@ -106,19 +113,19 @@ const TransactionProgress: FC<TransactionProgressProps> = ({
     <div className="w-full flex flex-col items-center">
       <div className="flex flex-col items-center gap-y-3">
         {allCompleted ? (
-          <Check className="size-6 text-green-600" />
+          <Check className="size-6 text-green-600 dark:text-green-500" />
         ) : (
-          <LoaderPinwheel className="size-6 animate-spin" />
+          <LoaderPinwheel className="size-6 animate-spin text-primary" />
         )}
-        <p>{headerText}</p>
+        <p className="text-foreground font-medium">{headerText}</p>
         <div className="flex items-center justify-center w-full">
-          <span className="text-2xl font-semibold font-nexus-primary text-nexus-black">
+          <span className="text-2xl font-semibold font-mono text-foreground">
             {Math.floor(timer)}
           </span>
-          <span className="text-base font-semibold font-nexus-primary text-nexus-black">
+          <span className="text-base font-semibold font-mono text-foreground">
             .
           </span>
-          <span className="text-base font-semibold font-nexus-primary text-nexus-muted-secondary">
+          <span className="text-base font-semibold font-mono text-muted-foreground">
             {String(Math.floor((timer % 1) * 1000)).padStart(3, "0")}s
           </span>
         </div>

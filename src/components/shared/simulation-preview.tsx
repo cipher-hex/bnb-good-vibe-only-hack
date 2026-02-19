@@ -44,24 +44,42 @@ export const SimulationPreview: React.FC<SimulationPreviewProps> = ({
 
   if (simulationError) {
     // Check if it's a "CA not applicable" info message
-    const isInfoMessage = simulationError.toLowerCase().includes("sufficient balance on the destination chain");
-    
+    const isInfoMessage = simulationError
+      .toLowerCase()
+      .includes("sufficient balance on the destination chain");
+
     return (
       <Card
         className={cn(
-          "border-none !shadow-[var(--ck-tertiary-box-shadow)] !rounded-[var(--ck-tertiary-border-radius)]",
-          isInfoMessage ? "bg-[#EFF6FF] border-2 border-[#2563EB]" : "bg-destructive/30",
+          "border-none shadow-sm rounded-xl",
+          isInfoMessage
+            ? "bg-blue-500/10 border-2 border-blue-500/20"
+            : "bg-destructive/30",
           className,
         )}
       >
         <CardContent className="p-4">
-          <div className={cn(
-            "text-sm font-semibold flex items-start gap-2",
-            isInfoMessage ? "text-[#2563EB]" : "text-destructive"
-          )}>
+          <div
+            className={cn(
+              "text-sm font-semibold flex items-start gap-2",
+              isInfoMessage
+                ? "text-blue-600 dark:text-blue-400"
+                : "text-destructive",
+            )}
+          >
             {isInfoMessage && (
-              <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                className="w-5 h-5 flex-shrink-0 mt-0.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
             )}
             <span>{simulationError}</span>
@@ -75,7 +93,7 @@ export const SimulationPreview: React.FC<SimulationPreviewProps> = ({
     return (
       <Card
         className={cn(
-          "border-none !shadow-[var(--ck-tertiary-box-shadow)] !rounded-[var(--ck-tertiary-border-radius)] bg-accent/10",
+          "border-none shadow-sm rounded-xl bg-accent/10",
           className,
         )}
       >
@@ -99,7 +117,7 @@ export const SimulationPreview: React.FC<SimulationPreviewProps> = ({
   const CompactPreview = () => (
     <Card
       className={cn(
-        "border-none !shadow-[var(--ck-tertiary-box-shadow)] !rounded-[var(--ck-tertiary-border-radius)] bg-accent/10 py-2",
+        "border-none shadow-sm rounded-xl bg-accent/10 py-2",
         className,
       )}
     >
@@ -113,7 +131,7 @@ export const SimulationPreview: React.FC<SimulationPreviewProps> = ({
           <Button
             size="sm"
             onClick={() => setShowDetailsDialog(true)}
-            className="h-6 p-2 text-xs bg-white text-[#2563EB] border border-[#2563EB] hover:bg-[#F3F4F6] transition-colors rounded-full font-semibold"
+            className="h-6 p-2 text-xs bg-card text-primary border border-primary hover:bg-accent transition-colors rounded-full font-semibold"
           >
             <Eye className="w-3 h-3 mr-1" />
             View Details
@@ -214,7 +232,7 @@ export const SimulationPreview: React.FC<SimulationPreviewProps> = ({
   // Detailed Dialog Component
   const DetailedDialog = () => (
     <Dialog open={showDetailsDialog} onOpenChange={setShowDetailsDialog}>
-      <DialogContent className="max-w-xl bg-accent-foreground border-none !shadow-[var(--ck-modal-box-shadow)] !rounded-[var(--ck-connectbutton-border-radius)]">
+      <DialogContent className="max-w-xl bg-card border border-border shadow-xl rounded-xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <TrendingUp className="w-5 h-5" />
@@ -239,7 +257,7 @@ export const SimulationPreview: React.FC<SimulationPreviewProps> = ({
                     {intent.sources.map((source, index) => (
                       <div
                         key={`${source.chainID}-${index}`}
-                        className="flex flex-col justify-center items-center gap-1 p-2 shadow-[var(--ck-tertiary-box-shadow)] !rounded-[var(--ck-tertiary-border-radius)]"
+                        className="flex flex-col justify-center items-center gap-1 p-2 shadow-sm rounded-xl border border-border"
                       >
                         <Image
                           src={CHAIN_METADATA[source.chainID]?.logo ?? ""}
@@ -269,7 +287,7 @@ export const SimulationPreview: React.FC<SimulationPreviewProps> = ({
 
                   <ArrowRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />
 
-                  <div className="flex flex-col justify-center items-center gap-y-1 p-2 w-fit shadow-[var(--ck-tertiary-box-shadow)] !rounded-[var(--ck-tertiary-border-radius)]">
+                  <div className="flex flex-col justify-center items-center gap-y-1 p-2 w-fit shadow-sm rounded-xl border border-border">
                     <Image
                       src={token.logo ?? ""}
                       alt={token.symbol}
@@ -288,7 +306,7 @@ export const SimulationPreview: React.FC<SimulationPreviewProps> = ({
                   <ArrowRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />
 
                   {/* Destination Chain */}
-                  <div className="flex flex-col justify-center items-center gap-1 p-2 flex-1 shadow-[var(--ck-tertiary-box-shadow)] !rounded-[var(--ck-tertiary-border-radius)]">
+                  <div className="flex flex-col justify-center items-center gap-1 p-2 flex-1 shadow-sm rounded-xl border border-border">
                     <Image
                       src={
                         CHAIN_METADATA[intent.destination.chainID]?.logo ?? ""
@@ -324,7 +342,7 @@ export const SimulationPreview: React.FC<SimulationPreviewProps> = ({
                     <span className="text-sm text-muted-foreground">
                       Solver Fee
                     </span>
-                    <span className="text-sm text-[#2563EB]">
+                    <span className="text-sm text-primary">
                       {formatCost(intent.fees.solver)} {intent.token?.symbol}
                     </span>
                   </div>
@@ -336,7 +354,7 @@ export const SimulationPreview: React.FC<SimulationPreviewProps> = ({
                       <span className="text-sm text-muted-foreground">
                         Protocol Fee
                       </span>
-                      <span className="text-sm text-[#2563EB]">
+                      <span className="text-sm text-primary">
                         {formatCost(intent.fees.protocol)}{" "}
                         {intent.token?.symbol}
                       </span>
@@ -349,7 +367,7 @@ export const SimulationPreview: React.FC<SimulationPreviewProps> = ({
                       <span className="text-sm text-muted-foreground">
                         Additional Gas
                       </span>
-                      <span className="text-sm text-[#2563EB]">
+                      <span className="text-sm text-primary">
                         {formatCost(intent.fees.gasSupplied)}{" "}
                         {intent.token?.symbol}
                       </span>

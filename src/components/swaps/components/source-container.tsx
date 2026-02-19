@@ -61,7 +61,7 @@ interface SourceContainerProps {
   formatBalance: (
     balance?: string | number,
     symbol?: string,
-    decimals?: number
+    decimals?: number,
   ) => string | undefined;
 }
 
@@ -84,12 +84,12 @@ const SourceContainer: React.FC<SourceContainerProps> = ({
   // In exactIn mode, show user's input; in exactOut mode, show calculated source from intent
   const displayedAmount =
     swapMode === "exactIn"
-      ? inputs.fromAmount ?? ""
-      : formatBalance(
+      ? (inputs.fromAmount ?? "")
+      : (formatBalance(
           swapIntent?.current?.intent?.sources?.[0]?.amount,
           swapIntent?.current?.intent?.sources?.[0]?.token?.symbol,
-          swapIntent?.current?.intent?.sources?.[0]?.token?.decimals
-        ) ?? "";
+          swapIntent?.current?.intent?.sources?.[0]?.token?.decimals,
+        ) ?? "");
 
   const isDisabled =
     isExactOut || status === "simulating" || status === "swapping";
@@ -97,7 +97,7 @@ const SourceContainer: React.FC<SourceContainerProps> = ({
   // Render exact-out read-only view
   if (isExactOut) {
     return (
-      <div className="bg-background rounded-xl flex flex-col items-center w-full gap-y-4 h-[134px]">
+      <div className="bg-muted/40 rounded-xl flex flex-col items-center w-full gap-y-4 h-[134px] px-4 py-4">
         <div className="w-full flex items-center justify-between">
           <Label className="text-lg font-medium text-foreground">Sell</Label>
         </div>
@@ -113,7 +113,7 @@ const SourceContainer: React.FC<SourceContainerProps> = ({
   }
 
   return (
-    <div className="bg-background rounded-xl flex flex-col items-center w-full gap-y-4">
+    <div className="bg-muted/40 rounded-xl flex flex-col items-center w-full gap-y-4 px-4 py-4">
       <div className="w-full flex items-center justify-between">
         <Label className="text-lg font-medium text-foreground">Sell</Label>
         <div
@@ -121,7 +121,7 @@ const SourceContainer: React.FC<SourceContainerProps> = ({
             "flex transition-all duration-150 ease-out w-full justify-end gap-x-2",
             sourceHovered
               ? "opacity-100 translate-y-0"
-              : "opacity-0 -translate-y-1"
+              : "opacity-0 -translate-y-1",
           )}
         >
           {RANGE_OPTIONS.map((option) => (
@@ -137,11 +137,11 @@ const SourceContainer: React.FC<SourceContainerProps> = ({
                   availableBalance?.balance ?? "0",
                   option.value,
                   inputs?.fromToken?.decimals,
-                  SAFETY_MARGIN
+                  SAFETY_MARGIN,
                 );
                 setInputs({ fromAmount: amount, toAmount: undefined });
               }}
-              className="px-5 py-1.5 rounded-full hover:-translate-y-1 hover:object-scale-down"
+              className="px-5 py-1.5 rounded-full hover:-translate-y-1 hover:object-scale-down bg-background"
             >
               <p className="text-xs font-medium">{option.label}</p>
             </Button>
@@ -154,7 +154,7 @@ const SourceContainer: React.FC<SourceContainerProps> = ({
           onChange={(val) => {
             if (availableBalance?.balance) {
               const parsedAvailableBalance = Number.parseFloat(
-                availableBalance?.balance
+                availableBalance?.balance,
               );
               const parsedVal = Number.parseFloat(val);
               if (parsedVal > parsedAvailableBalance) {
@@ -172,8 +172,8 @@ const SourceContainer: React.FC<SourceContainerProps> = ({
           <DialogTrigger asChild>
             <div
               className={cn(
-                "flex items-center gap-x-3 bg-card/50 hover:bg-card-foreground/10 border border-border min-w-max rounded-full p-1 cursor-pointer transition-colors",
-                isDisabled ? "pointer-events-none select-none opacity-50" : ""
+                "flex items-center gap-x-3 bg-background hover:bg-accent border border-border min-w-max rounded-full p-1 pr-3 cursor-pointer transition-colors shadow-sm",
+                isDisabled ? "pointer-events-none select-none opacity-50" : "",
               )}
             >
               <TokenIcon
@@ -209,8 +209,8 @@ const SourceContainer: React.FC<SourceContainerProps> = ({
             {usdFormatter.format(
               getFiatValue(
                 Number.parseFloat(inputs.fromAmount),
-                inputs.fromToken?.symbol
-              )
+                inputs.fromToken?.symbol,
+              ),
             )}
           </span>
         ) : (
@@ -221,7 +221,7 @@ const SourceContainer: React.FC<SourceContainerProps> = ({
           {formatBalance(
             availableBalance?.balance ?? "0",
             inputs?.fromToken?.symbol,
-            availableBalance?.decimals
+            availableBalance?.decimals,
           )}
         </span>
       </div>

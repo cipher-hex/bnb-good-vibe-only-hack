@@ -38,17 +38,17 @@ const TemplateInput: React.FC<{
       case "select":
         return (
           <Select value={value} onValueChange={onChange}>
-            <SelectTrigger className="shadow-[var(--ck-connectbutton-box-shadow)] rounded-[var(--ck-connectbutton-border-radius)] border-none">
+            <SelectTrigger className="shadow-sm rounded-xl border-input bg-background">
               <SelectValue
                 placeholder={field.placeholder || `Select ${field.label}`}
               />
             </SelectTrigger>
-            <SelectContent className="bg-accent-foreground rounded-[var(--ck-connectbutton-border-radius)]">
+            <SelectContent className="bg-popover rounded-xl border border-border">
               {field.options?.map((option, index) => (
                 <SelectItem
                   key={`${option.value}-${index}`}
                   value={option.value}
-                  className="hover:bg-background/30 rounded-[var(--ck-connectbutton-border-radius)]"
+                  className="rounded-lg focus:bg-accent focus:text-accent-foreground cursor-pointer"
                 >
                   {option.label}
                 </SelectItem>
@@ -64,7 +64,7 @@ const TemplateInput: React.FC<{
             value={value}
             onChange={handleInputChange}
             placeholder={field.placeholder || "0x..."}
-            className="border-none focus-visible:ring-0 focus-visible:ring-offset-0 shadow-[var(--ck-connectbutton-box-shadow)] rounded-[var(--ck-connectbutton-border-radius)]"
+            className="border-input bg-background focus-visible:ring-1 focus-visible:ring-ring shadow-sm rounded-xl"
           />
         );
 
@@ -77,7 +77,7 @@ const TemplateInput: React.FC<{
             placeholder={field.placeholder}
             min={field.validation?.min}
             max={field.validation?.max}
-            className="border-none focus-visible:ring-0 focus-visible:ring-offset-0 shadow-[var(--ck-connectbutton-box-shadow)] rounded-[var(--ck-connectbutton-border-radius)]"
+            className="border-input bg-background focus-visible:ring-1 focus-visible:ring-ring shadow-sm rounded-xl"
           />
         );
 
@@ -89,7 +89,7 @@ const TemplateInput: React.FC<{
             onChange={handleInputChange}
             placeholder={field.placeholder}
             pattern={field.validation?.pattern}
-            className="border-none focus-visible:ring-0 focus-visible:ring-offset-0 shadow-[var(--ck-connectbutton-box-shadow)] rounded-[var(--ck-connectbutton-border-radius)]"
+            className="border-input bg-background focus-visible:ring-1 focus-visible:ring-ring shadow-sm rounded-xl"
           />
         );
     }
@@ -121,7 +121,7 @@ const TemplateInputs: React.FC<TemplateInputsProps> = ({
 }) => {
   const requiredFields = template.inputFields.filter((field) => field.required);
   const optionalFields = template.inputFields.filter(
-    (field) => !field.required
+    (field) => !field.required,
   );
 
   if (template.inputFields.length === 0) {

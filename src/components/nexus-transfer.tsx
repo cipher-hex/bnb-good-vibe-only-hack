@@ -454,7 +454,7 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
   return (
     <div className="flex flex-col gap-y-4 py-4">
       {/* Payment ID Section */}
-      <Card className="border-none py-3 !shadow-[var(--ck-connectbutton-box-shadow)] !rounded-[var(--ck-connectbutton-border-radius)] bg-accent-foreground">
+      <Card className="border-none py-3 shadow-sm rounded-xl bg-muted/30">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center gap-2">
             <Search className="w-5 h-5" />
@@ -473,7 +473,7 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
                 value={state.paymentLoading.paymentId}
                 onChange={handlePaymentIdChange}
                 disabled={state.paymentLoading.isLoading}
-                className="border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="bg-background"
               />
             </div>
             <Button
@@ -495,9 +495,9 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
 
           {/* Error State */}
           {state.paymentLoading.error && (
-            <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-md flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-red-500" />
-              <span className="text-sm text-red-700">
+            <div className="mt-3 p-3 bg-destructive/10 border border-destructive/20 rounded-md flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-destructive" />
+              <span className="text-sm text-destructive">
                 {state.paymentLoading.error}
               </span>
             </div>
@@ -505,11 +505,11 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
 
           {/* Payment Data Display */}
           {state.paymentLoading.data && (
-            <div className="mt-3 p-4 bg-blue-50 border border-blue-200 rounded-md">
+            <div className="mt-3 p-4 bg-primary/10 border border-primary/20 rounded-md">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-600" />
-                  <span className="font-semibold text-green-800">
+                  <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-500" />
+                  <span className="font-semibold text-foreground">
                     Payment Request Loaded
                   </span>
                 </div>
@@ -517,7 +517,7 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
                   variant="ghost"
                   size="sm"
                   onClick={clearPaymentMode}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-muted-foreground hover:text-foreground"
                 >
                   Clear
                 </Button>
@@ -525,7 +525,7 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
 
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div>
-                  <Label className="text-gray-600">Payment ID</Label>
+                  <Label className="text-muted-foreground">Payment ID</Label>
                   <div className="font-mono">
                     {formatPaymentId(
                       parsePaymentId(state.paymentLoading.paymentId) || 0,
@@ -533,7 +533,7 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
                   </div>
                 </div>
                 <div>
-                  <Label className="text-gray-600">Status</Label>
+                  <Label className="text-muted-foreground">Status</Label>
                   <div>
                     <Badge
                       variant={
@@ -552,14 +552,14 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
                   </div>
                 </div>
                 <div>
-                  <Label className="text-gray-600">Amount</Label>
+                  <Label className="text-muted-foreground">Amount</Label>
                   <div>
                     {state.paymentLoading.data.formattedAmount}{" "}
                     {state.paymentLoading.data.tokenSymbol}
                   </div>
                 </div>
                 <div>
-                  <Label className="text-gray-600">Merchant</Label>
+                  <Label className="text-muted-foreground">Merchant</Label>
                   <div className="font-mono text-xs">
                     {state.paymentLoading.data.merchant.slice(0, 8)}...
                     {state.paymentLoading.data.merchant.slice(-6)}
@@ -569,10 +569,10 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
 
               {/* Warning for non-pending payments */}
               {state.paymentLoading.data.status !== PaymentStatus.Pending && (
-                <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded-md">
+                <div className="mt-3 p-2 bg-yellow-500/10 border border-yellow-500/20 rounded-md">
                   <div className="flex items-center gap-2">
-                    <AlertTriangle className="w-4 h-4 text-yellow-600" />
-                    <span className="text-sm text-yellow-800">
+                    <AlertTriangle className="w-4 h-4 text-yellow-600 dark:text-yellow-500" />
+                    <span className="text-sm text-yellow-800 dark:text-yellow-200">
                       {state.paymentLoading.data.status === PaymentStatus.Paid
                         ? "This payment request has already been fulfilled"
                         : "This payment request has been cancelled"}
@@ -613,7 +613,7 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
           />
         )}
       </div>
-      <div className="w-full flex items-center gap-x-2 shadow-[var(--ck-connectbutton-box-shadow)] rounded-[var(--ck-connectbutton-border-radius)]">
+      <div className="w-full flex items-center gap-x-2 shadow-sm rounded-xl border border-input bg-background px-3">
         <Input
           type="text"
           placeholder={
@@ -621,7 +621,7 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
               ? "Merchant address (auto-filled)"
               : "Recipient address"
           }
-          className="border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          className="border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12 px-0 shadow-none bg-transparent"
           value={
             state.recipientAddress
               ? nexusSdk?.utils.truncateAddress(state.recipientAddress, 6, 6)
@@ -631,13 +631,13 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
           disabled={!state.selectedToken || state.isPaymentMode}
         />
       </div>
-      <div className="w-full flex items-center gap-x-2 shadow-[var(--ck-connectbutton-box-shadow)] rounded-[var(--ck-connectbutton-border-radius)]">
+      <div className="w-full flex items-center gap-x-2 shadow-sm rounded-xl border border-input bg-background px-3">
         <Input
           type="text"
           placeholder={
             state.isPaymentMode ? "Payment amount (auto-filled)" : "Amount"
           }
-          className="border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          className="border-none focus-visible:ring-0 focus-visible:ring-offset-0 h-12 px-0 shadow-none bg-transparent"
           value={state.amount}
           onChange={handleAmountChange}
           disabled={!state.selectedToken || state.isPaymentMode}
@@ -659,7 +659,7 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
         )}
 
       <Button
-        variant="connectkit"
+        variant="default"
         className="w-full font-semibold"
         onClick={handleTransfer}
         disabled={!isValidTransferAmount || state.isTransferring || isMarking}

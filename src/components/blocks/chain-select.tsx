@@ -45,7 +45,7 @@ const ChainSelect = ({
         )}
         <SelectTrigger
           disabled={disabled}
-          className="w-full !shadow-[var(--ck-connectbutton-box-shadow)] rounded-[var(--ck-connectbutton-border-radius)] border-none !focus-visible:none outline-none"
+          className="w-full shadow-sm rounded-xl border-none focus-visible:ring-1 focus-visible:ring-ring bg-card"
         >
           <SelectValue>
             {!!selectedChain && (
@@ -64,13 +64,13 @@ const ChainSelect = ({
         </SelectTrigger>
       </div>
 
-      <SelectContent className="bg-accent-foreground rounded-[var(--ck-connectbutton-border-radius)]">
+      <SelectContent className="bg-popover rounded-xl border border-border">
         {chains.map((chainId) => {
           return (
             <SelectItem
               key={chainId}
               value={chainId.toString()}
-              className="flex items-center gap-2 !hover:bg-background/30 rounded-[var(--ck-connectbutton-border-radius)]"
+              className="flex items-center gap-2 cursor-pointer rounded-lg focus:bg-accent focus:text-accent-foreground"
             >
               <div className="flex items-center gap-2 my-1">
                 <Image
