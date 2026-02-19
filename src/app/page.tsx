@@ -25,25 +25,51 @@ export default function Home() {
       case "unified-balance":
       case "swap":
       case "fast-transfer":
-        return (
-          <NexusUI
-            isTestnet={isTestnet}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-          />
-        );
+        return <NexusUI isTestnet={isTestnet} activeTab={activeTab} />;
       case "payment-request":
         return <CreatePaymentRequest isTestnet={isTestnet} />;
       default:
-        return (
-          <NexusUI
-            isTestnet={isTestnet}
-            activeTab="unified-balance"
-            onTabChange={setActiveTab}
-          />
-        );
+        return <NexusUI isTestnet={isTestnet} activeTab="unified-balance" />;
     }
   };
+
+  // Get header content based on active tab
+  const getHeaderContent = () => {
+    switch (activeTab) {
+      case "unified-balance":
+        return {
+          title: "Unified Balance",
+          description:
+            "View and manage your assets across all supported chains in one place.",
+        };
+      case "swap":
+        return {
+          title: "Gasless Swap",
+          description:
+            "Swap tokens seamlessly without worrying about gas fees on the destination chain.",
+        };
+      case "fast-transfer":
+        return {
+          title: "Fast Transfer",
+          description:
+            "Send funds quickly to any supported chain with instant execution.",
+        };
+      case "payment-request":
+        return {
+          title: "Create Payment Request",
+          description:
+            "Generate a payment request that customers can fulfill via cross-chain transfers.",
+        };
+      default:
+        return {
+          title: "Welcome to Trans-Pay",
+          description:
+            "Create payment requests, accept payments from any blockchain, and manage cross-chain transfers seamlessly.",
+        };
+    }
+  };
+
+  const headerContent = getHeaderContent();
 
   return (
     <>
@@ -58,12 +84,10 @@ export default function Home() {
           <Card className="bg-white shadow-2xl rounded-3xl border-none mx-auto w-[95%] max-w-4xl overflow-hidden">
             <CardHeader className="flex flex-col w-full items-center px-8 pt-8 pb-6">
               <CardTitle className="text-3xl font-bold text-[#1E293B] mb-2">
-                Welcome to Trans-Pay
+                {headerContent.title}
               </CardTitle>
               <CardDescription className="text-center text-[#64748B] max-w-2xl text-base">
-                Create payment requests, accept payments from any blockchain,
-                and manage cross-chain transfers seamlessly. The future of
-                decentralized payments.
+                {headerContent.description}
               </CardDescription>
             </CardHeader>
             <CardContent className="px-4 md:px-8 pb-8">
