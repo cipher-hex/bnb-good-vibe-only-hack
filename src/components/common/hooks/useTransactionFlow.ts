@@ -6,6 +6,8 @@ import {
   type OnIntentHookData,
   parseUnits,
   type UserAsset,
+  type SUPPORTED_TOKENS,
+  type SUPPORTED_CHAINS_IDS,
 } from "@avail-project/nexus-core";
 import {
   useEffect,
@@ -538,6 +540,38 @@ export function useTransactionFlow(props: UseTransactionFlowProps) {
       setTxError(null);
     }
   }, [inputs, txError]);
+
+  // Update inputs when prefill changes (e.g., when payment data is loaded)
+  useEffect(() => {
+    if (!prefill) return;
+
+    const needsUpdate =
+      (prefill.token && prefill.token !== inputs.token) ||
+      (prefill.chainId && prefill.chainId !== inputs.chain) ||
+      (prefill.amount && prefill.amount !== inputs.amount) ||
+      (prefill.recipient && prefill.recipient !== inputs.recipient);
+
+    if (needsUpdate) {
+      const updates: Partial<TransactionFlowInputs> = {};
+
+      if (prefill.token && prefill.token !== inputs.token) {
+        updates.token = prefill.token as SUPPORTED_TOKENS;
+      }
+      if (prefill.chainId && prefill.chainId !== inputs.chain) {
+        updates.chain = prefill.chainId as SUPPORTED_CHAINS_IDS;
+      }
+      if (prefill.amount && prefill.amount !== inputs.amount) {
+        updates.amount = prefill.amount;
+      }
+      if (prefill.recipient && prefill.recipient !== inputs.recipient) {
+        updates.recipient = prefill.recipient;
+      }
+
+      if (Object.keys(updates).length > 0) {
+        dispatch({ type: "setInputs", payload: updates });
+      }
+    }
+  }, [prefill, inputs.token, inputs.chain, inputs.amount, inputs.recipient]);
 
   return {
     inputs,
