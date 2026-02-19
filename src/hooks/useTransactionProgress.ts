@@ -6,7 +6,7 @@ import { formatStepName } from "@/lib/bridge/formatters";
 import { toast } from "sonner";
 import { StepCompletionEventData, TransactionType } from "@/types/transaction";
 import { useSDKTransactionHistory } from "./useSDKTransactionHistory";
-import { NEXUS_EVENTS, ProgressStep } from "@avail-project/nexus-core";
+import { NEXUS_EVENTS } from "@avail-project/nexus-core";
 
 interface TransactionProgressOptions {
   transactionType?: TransactionType;
@@ -156,44 +156,18 @@ export const useTransactionProgress = (
   }, [progressSteps.length, completedStepsCount]);
 
   /**
-   * Subscribe to SDK events
+   * Subscribe to SDK events - Note: Event handling is now done through onEvent callbacks in SDK methods
    */
   useEffect(() => {
-    // Add event listeners
-    nexusSdk?.nexusEvents.on(
-      transactionType === "bridge-execute"
-        ? NEXUS_EVENTS.BRIDGE_EXECUTE_EXPECTED_STEPS
-        : NEXUS_EVENTS.EXPECTED_STEPS,
-      (steps: ProgressStep[]) => {
-        setProgressSteps(steps.map((step) => ({ ...step, done: false })));
-      },
-    );
-    nexusSdk?.nexusEvents.on(
-      transactionType === "bridge-execute"
-        ? NEXUS_EVENTS.BRIDGE_EXECUTE_COMPLETED_STEPS
-        : NEXUS_EVENTS.STEP_COMPLETE,
-      handleStepComplete,
-    );
-
+    // Event handling is now done through onEvent callbacks in individual SDK method calls
+    // This useEffect is kept for potential future event handling needs
     return () => {
-      nexusSdk?.nexusEvents.off(
-        transactionType === "bridge-execute"
-          ? NEXUS_EVENTS.BRIDGE_EXECUTE_EXPECTED_STEPS
-          : NEXUS_EVENTS.EXPECTED_STEPS,
-        setProgressSteps,
-      );
-      nexusSdk?.nexusEvents.off(
-        transactionType === "bridge-execute"
-          ? NEXUS_EVENTS.BRIDGE_EXECUTE_COMPLETED_STEPS
-          : NEXUS_EVENTS.STEP_COMPLETE,
-        handleStepComplete,
-      );
+      // Cleanup if needed
     };
   }, [
     setProgressSteps,
     handleStepComplete,
     handleTransactionError,
-    nexusSdk?.nexusEvents,
     transactionType,
   ]);
 

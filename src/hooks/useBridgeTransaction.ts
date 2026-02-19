@@ -77,18 +77,20 @@ export const useBridgeTransaction = () => {
         amount: bridgeAmount,
       });
 
+      // Convert amount string to bigint (assuming 6 decimals for USDC/USDT)
+      const amountInSmallestUnit = BigInt(
+        Math.floor(parseFloat(bridgeAmount) * 1_000_000),
+      );
+
       const result = await nexusSdk.bridge({
-        chainId: selectedChain,
+        toChainId: selectedChain,
         token: selectedToken,
-        amount: bridgeAmount,
+        amount: amountInSmallestUnit,
         ...(sourceChains && sourceChains.length > 0 && { sourceChains }),
       });
 
-      if (!result?.success) {
-        setError(result.error);
-      }
-
-      if (result.success) {
+      // Check if result has transactionHash (success case)
+      if (result && "transactionHash" in result) {
         toast.success("Bridge transaction completed successfully!", {
           description: `${bridgeAmount} ${selectedToken} bridged successfully`,
           duration: 5000,
@@ -172,10 +174,15 @@ export const useBridgeTransaction = () => {
     }
 
     try {
+      // Convert amount string to bigint (assuming 6 decimals for USDC/USDT)
+      const amountInSmallestUnit = BigInt(
+        Math.floor(parseFloat(bridgeAmount) * 1_000_000),
+      );
+
       const simulation = await nexusSdk.simulateBridge({
-        chainId: selectedChain,
+        toChainId: selectedChain,
         token: selectedToken,
-        amount: bridgeAmount,
+        amount: amountInSmallestUnit,
       });
       console.log("Simulation result:", simulation);
       return simulation;
@@ -203,10 +210,15 @@ export const useBridgeTransaction = () => {
       setSimulating(true);
       setSimulationError(null);
 
+      // Convert amount string to bigint (assuming 6 decimals for USDC/USDT)
+      const amountInSmallestUnit = BigInt(
+        Math.floor(parseFloat(bridgeAmount) * 1_000_000),
+      );
+
       const result: SimulationResult = await nexusSdk.simulateBridge({
-        chainId: selectedChain,
+        toChainId: selectedChain,
         token: selectedToken,
-        amount: bridgeAmount,
+        amount: amountInSmallestUnit,
         ...(sourceChains && sourceChains.length > 0 && { sourceChains }),
       });
 
