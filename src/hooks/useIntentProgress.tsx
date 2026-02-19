@@ -8,13 +8,41 @@ export interface IntentStepType {
 }
 
 const INTENT_STEPS_DATA = [
-  { id: "accepted", name: "Intent Accepted", description: "Transaction has been accepted" },
-  { id: "signed", name: "Intent Hash Signed", description: "Hash signature in progress" },
-  { id: "submitted", name: "Intent Submitted", description: "Submitting to the network" },
-  { id: "collection", name: "Intent Collection", description: "Collecting transaction data" },
-  { id: "mined", name: "Intent Mined", description: "Mining transaction on chain" },
-  { id: "confirmed", name: "Intent Deposits Confirmed", description: "Confirming deposits" },
-  { id: "fulfilled", name: "Intent Fulfilled", description: "Transaction complete" }
+  {
+    id: "accepted",
+    name: "Intent Accepted",
+    description: "Transaction has been accepted",
+  },
+  {
+    id: "signed",
+    name: "Intent Hash Signed",
+    description: "Hash signature in progress",
+  },
+  {
+    id: "submitted",
+    name: "Intent Submitted",
+    description: "Submitting to the network",
+  },
+  {
+    id: "collection",
+    name: "Intent Collection",
+    description: "Collecting transaction data",
+  },
+  {
+    id: "mined",
+    name: "Intent Mined",
+    description: "Mining transaction on chain",
+  },
+  {
+    id: "confirmed",
+    name: "Intent Deposits Confirmed",
+    description: "Confirming deposits",
+  },
+  {
+    id: "fulfilled",
+    name: "Intent Fulfilled",
+    description: "Transaction complete",
+  },
 ];
 
 export const useIntentProgress = () => {
@@ -60,16 +88,16 @@ export const useIntentProgress = () => {
   // Map transaction states to intent steps
   const mapTransactionState = useCallback((state: string) => {
     const stateToStep: { [key: string]: number } = {
-      'initiated': 0,
-      'signed': 1,
-      'submitted': 2,
-      'processing': 3,
-      'mining': 4,
-      'confirming': 5,
-      'completed': 6,
-      'success': 6
+      initiated: 0,
+      signed: 1,
+      submitted: 2,
+      processing: 3,
+      mining: 4,
+      confirming: 5,
+      completed: 6,
+      success: 6,
     };
-    
+
     return stateToStep[state.toLowerCase()] ?? 0;
   }, []);
 
@@ -84,6 +112,6 @@ export const useIntentProgress = () => {
     hideProgress,
     mapTransactionState,
     steps: INTENT_STEPS_DATA,
-    progressPercentage: (currentStep / (INTENT_STEPS_DATA.length - 1)) * 100
+    progressPercentage: (currentStep / (INTENT_STEPS_DATA.length - 1)) * 100,
   };
 };
