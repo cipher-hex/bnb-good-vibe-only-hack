@@ -7,10 +7,17 @@ import { toast } from "sonner";
 import { useAccount, useSwitchChain } from "wagmi";
 import { useNexus } from "@/provider/NexusProvider";
 import {
-  SUPPORTED_CHAINS,
   SUPPORTED_CHAINS_IDS,
   SUPPORTED_TOKENS,
 } from "@avail-project/nexus-core";
+import {
+  BNB_CHAIN_ID,
+  PAYMENT_STATUS_LABELS,
+} from "@/constants/paymentRequest";
+import {
+  useGetPaymentRequest,
+  useMarkPaymentAsPaid,
+} from "@/hooks/usePaymentRequest";
 import ChainSelect from "./blocks/chain-select";
 import TokenSelect from "./blocks/token-select";
 import { SourceChainSelector } from "./blocks/source-chain-selector";
@@ -31,19 +38,25 @@ import { Label } from "./ui/label";
 import { Badge } from "./ui/badge";
 import { AlertTriangle, CheckCircle, Search } from "lucide-react";
 import {
-  useGetPaymentRequest,
-  useMarkPaymentAsPaid,
-} from "@/hooks/usePaymentRequest";
-import {
   formatPaymentId,
   parsePaymentId,
   getTokenInfo,
   getChainInfo,
-  POLYGON_CHAIN_ID,
-  BNB_CHAIN_ID,
-  PAYMENT_STATUS_LABELS,
 } from "@/constants/paymentRequest";
-import { PaymentStatus, PaymentLoadingState } from "@/types/payment-request";
+
+// Define local types
+interface PaymentLoadingState {
+  paymentId: string;
+  isLoading: boolean;
+  data: any | null;
+  error: string | null;
+}
+
+enum PaymentStatus {
+  PENDING = 0,
+  FULFILLED = 1,
+  CANCELLED = 2,
+}
 
 interface TransferState {
   selectedChain: SUPPORTED_CHAINS_IDS;
@@ -376,7 +389,8 @@ const NexusTransfer = ({ isTestnet }: { isTestnet: boolean }) => {
 
       console.log("result", result);
 
-      if (result.success) {
+      // Check if result has transactionHash (success case) or error property
+      if (result && "transactionHash" in result) {
         // If this was a payment request fulfillment, mark it as paid
         if (state.isPaymentMode && state.paymentLoading.data && walletAddress) {
           try {

@@ -29,7 +29,7 @@ const NexusBridge: React.FC<{ isTestnet: boolean }> = ({ isTestnet }) => {
 
   const setLoading = useBridgeStore((state) => state.setLoading);
   const setAvailableBalance = useBridgeStore(
-    (state) => state.setAvailableBalance
+    (state) => state.setAvailableBalance,
   );
 
   const { executeBridge, isBridging } = useBridgeTransaction();
