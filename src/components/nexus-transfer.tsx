@@ -40,7 +40,6 @@ import { AlertTriangle, CheckCircle, Search } from "lucide-react";
 import {
   formatPaymentId,
   parsePaymentId,
-  getTokenInfo,
   getChainInfo,
 } from "@/constants/paymentRequest";
 

@@ -6,7 +6,7 @@ import { formatStepName } from "@/lib/bridge/formatters";
 import { toast } from "sonner";
 import { StepCompletionEventData, TransactionType } from "@/types/transaction";
 import { useSDKTransactionHistory } from "./useSDKTransactionHistory";
-import { NEXUS_EVENTS } from "@avail-project/nexus-core";
+// NEXUS_EVENTS removed as it's not used in this component
 
 interface TransactionProgressOptions {
   transactionType?: TransactionType;
@@ -26,7 +26,7 @@ export const useTransactionProgress = (
 ) => {
   const { transactionType = "bridge" } = options;
 
-  const { nexusSdk } = useNexus();
+  // nexusSdk removed as event handling is now done through onEvent callbacks
   const [explorerURL, setExplorerURL] = useState<string>("");
 
   // Store selectors
