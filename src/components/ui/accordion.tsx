@@ -12,24 +12,14 @@ function Accordion({
   return <AccordionPrimitive.Root data-slot="accordion" {...props} />;
 }
 
-interface AccordionItemProps
-  extends React.ComponentProps<typeof AccordionPrimitive.Item> {
-  removeLastBorder?: boolean;
-}
-
 function AccordionItem({
   className,
-  removeLastBorder = false,
   ...props
-}: Readonly<AccordionItemProps>) {
+}: React.ComponentProps<typeof AccordionPrimitive.Item>) {
   return (
     <AccordionPrimitive.Item
       data-slot="accordion-item"
-      className={cn(
-        "",
-        className,
-        !removeLastBorder && "border-b last:border-b-0"
-      )}
+      className={cn("border-b last:border-b-0", className)}
       {...props}
     />
   );
@@ -38,20 +28,27 @@ function AccordionItem({
 function AccordionTrigger({
   className,
   children,
+  hideChevron = true,
+  containerClassName = "w-full",
   ...props
-}: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
+}: React.ComponentProps<typeof AccordionPrimitive.Trigger> & {
+  hideChevron?: boolean;
+  containerClassName?: string;
+}) {
   return (
-    <AccordionPrimitive.Header className="flex">
+    <AccordionPrimitive.Header className={cn("flex", containerClassName)}>
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
           "focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all outline-none hover:underline focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
-          className
+          className,
         )}
         {...props}
       >
         {children}
-        <ChevronDownIcon className="text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200 my-auto" />
+        {!hideChevron && (
+          <ChevronDownIcon className="text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-200" />
+        )}
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   );

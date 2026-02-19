@@ -23,12 +23,15 @@ const nextConfig: NextConfig = {
       tls: false,
       // Handle optional pino-pretty dependency
       "pino-pretty": false,
+      // Handle React Native dependencies
+      "@react-native-async-storage/async-storage": false,
     };
 
     // Ignore optional dependencies that aren't needed for production
     config.resolve.alias = {
       ...config.resolve.alias,
       "pino-pretty": false,
+      "@react-native-async-storage/async-storage": false,
     };
 
     return config;

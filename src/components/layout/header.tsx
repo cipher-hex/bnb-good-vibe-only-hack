@@ -12,6 +12,7 @@ interface HeaderProps {
 
 const Header = ({ activeTab, onTabChange, isTestnet }: HeaderProps) => {
   const tabs = [
+    { value: "nexus-ui", label: "Nexus UI" },
     { value: "unified-balance", label: "Unified Balance" },
     { value: "bridge", label: "Bridge" },
     { value: "transfer", label: "Transfer" },
@@ -24,7 +25,9 @@ const Header = ({ activeTab, onTabChange, isTestnet }: HeaderProps) => {
         <div className="flex items-center justify-between mb-4">
           <Link href="/" className="flex items-center">
             <div className="flex flex-col">
-              <span className="text-xl font-semibold text-[#1E293B]">Trans-Pay</span>
+              <span className="text-xl font-semibold text-[#1E293B]">
+                Trans-Pay
+              </span>
               <span className="text-xs text-[#64748B]">
                 Cross-Chain Payment Requests
               </span>
@@ -32,7 +35,7 @@ const Header = ({ activeTab, onTabChange, isTestnet }: HeaderProps) => {
           </Link>
           <ConnectWallet />
         </div>
-        
+
         <nav className="flex items-center justify-center gap-2 border-t border-[#E1ECF7] pt-4 relative">
           <div className="flex items-center gap-2">
             {tabs.map((tab) => (
@@ -41,9 +44,10 @@ const Header = ({ activeTab, onTabChange, isTestnet }: HeaderProps) => {
                 onClick={() => onTabChange(tab.value)}
                 className={`
                   px-6 py-3 rounded-xl font-medium transition-all duration-200
-                  ${activeTab === tab.value
-                    ? 'bg-[#2563EB] text-white shadow-md'
-                    : 'bg-[#EFF6FF] text-[#2563EB] hover:bg-[#DBEAFE] hover:shadow-sm'
+                  ${
+                    activeTab === tab.value
+                      ? "bg-[#2563EB] text-white shadow-md"
+                      : "bg-[#EFF6FF] text-[#2563EB] hover:bg-[#DBEAFE] hover:shadow-sm"
                   }
                 `}
               >
