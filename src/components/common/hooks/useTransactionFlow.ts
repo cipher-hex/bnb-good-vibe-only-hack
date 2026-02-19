@@ -183,7 +183,7 @@ export function useTransactionFlow(props: UseTransactionFlowProps) {
     const destinationChainId = inputs?.chain;
     const nonZero = breakdown.filter((source) => {
       if (Number.parseFloat(source.balance ?? "0") <= 0) return false;
-      if (typeof destinationChainId === "number") {
+      if (type === "bridge" && typeof destinationChainId === "number") {
         return source.chain.id !== destinationChainId;
       }
       return true;
@@ -597,7 +597,7 @@ export function useTransactionFlow(props: UseTransactionFlowProps) {
     isSourceSelectionInsufficient: sourceSelection.isBelowRequired,
     isSourceSelectionBelowSafetyBuffer: sourceSelection.isBelowSafetyBuffer,
     isSourceSelectionReadyForAccept:
-      sourceSelection.coverageState === "healthy",
+      sourceSelection.coverageState === "healthy" || Boolean(intent.current),
     sourceCoverageState: sourceSelection.coverageState,
     sourceCoveragePercent: sourceSelection.coverageToSafetyPercent,
     missingToProceed: sourceSelection.missingToProceed,

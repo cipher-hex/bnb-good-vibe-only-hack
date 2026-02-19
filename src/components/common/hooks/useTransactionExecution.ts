@@ -342,12 +342,7 @@ export function useTransactionExecution({
       onError?.(message);
       return;
     }
-    if (sourceSelection.isBelowRequired && inputs?.token) {
-      const message = `Selected sources are not enough. Add ${sourceSelection.missingToProceed} ${inputs.token} more to make this transaction.`;
-      setTxError(message);
-      onError?.(message);
-      return;
-    }
+
     void (async () => {
       const refreshed = await refreshIntent({ reportError: true });
       if (!refreshed || !intent.current) return;
