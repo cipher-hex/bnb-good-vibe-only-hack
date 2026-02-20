@@ -40,7 +40,7 @@ const NexusBridge: React.FC<{ isTestnet: boolean }> = ({ isTestnet }) => {
 
     try {
       setLoading(true);
-      const balance = await nexusSdk.getUnifiedBalances();
+      const balance = await nexusSdk.getUnifiedBalance();
       setAvailableBalance(balance);
     } catch (error) {
       console.error("Error fetching balances:", error);

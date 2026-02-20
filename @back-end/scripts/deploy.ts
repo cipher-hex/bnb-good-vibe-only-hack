@@ -35,29 +35,12 @@ async function main() {
   console.log(`📍 Contract address: ${contractAddress}`);
   console.log(`🌐 Network: ${networkName} (Chain ID: ${chainId})`);
 
-  // Check supported tokens and chains
-  const isUSDCSupported = await paymentRequest.isTokenSupported("USDC");
-  const isUSDTSupported = await paymentRequest.isTokenSupported("USDT");
-  const isPolygonSupported = await paymentRequest.isChainSupported(137);
-  const isEthereumSupported = await paymentRequest.isChainSupported(1);
-
-  console.log(`💰 Supported tokens:`);
-  console.log(`   USDC: ${isUSDCSupported ? "✅" : "❌"}`);
-  console.log(`   USDT: ${isUSDTSupported ? "✅" : "❌"}`);
-  console.log(`🌐 Supported chains:`);
-  console.log(`   Ethereum (1): ${isEthereumSupported ? "✅" : "❌"}`);
-  console.log(`   Polygon (137): ${isPolygonSupported ? "✅" : "❌"}`);
-
-  // Create deployment info object
+  // Create simplified deployment info object
   const deploymentInfo = {
     contractAddress,
-    networkName: networkName === "unknown" ? "polygonAmoy" : networkName,
     chainId: Number(chainId),
-    deploymentBlock: await ethers.provider.getBlockNumber(),
     deploymentTimestamp: Date.now(),
-    supportedTokens: ["USDC", "USDT"],
-    supportedChains: [1, 10, 137, 42161, 43114, 8453, 56],
-    abi: PaymentRequest.interface.format("json"),
+    abi: PaymentRequest.interface.format(),
   };
 
   // Ensure deployments directory exists
@@ -68,11 +51,11 @@ async function main() {
 
   // Save deployment info to file
   const fileName =
-    chainId === 137n
+    chainId === BigInt(137)
       ? "polygon.json"
-      : chainId === 80002n
+      : chainId === BigInt(80002)
       ? "polygonAmoy.json"
-      : chainId === 56n
+      : chainId === BigInt(56)
       ? "bsc.json"
       : `deployment-${chainId}.json`;
 
