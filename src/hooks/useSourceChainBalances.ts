@@ -29,7 +29,9 @@ export const useSourceChainBalances = ({
   isTestnet,
 }: UseSourceChainBalancesParams): UseSourceChainBalancesReturn => {
   const { nexusSdk } = useNexus();
-  const [availableChains, setAvailableChains] = useState<SourceChainOption[]>([]);
+  const [availableChains, setAvailableChains] = useState<SourceChainOption[]>(
+    [],
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,7 +53,7 @@ export const useSourceChainBalances = ({
 
       // Access the breakdown from the UserAsset - it might be in .value or directly on the object
       const breakdown = tokenAsset?.value?.breakdown || tokenAsset?.breakdown;
-      
+
       if (!tokenAsset || !breakdown || breakdown.length === 0) {
         // No balances for this token
         console.log("No balance data found for", selectedToken);
